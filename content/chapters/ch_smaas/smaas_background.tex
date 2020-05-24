@@ -1,0 +1,21 @@
+
+Packaging metrics-as-a-service for programmatic access requires an understanding of the backend processing pipeline as well as some assumptions about the caller’s intent in order to develop a robust yet generalizable API. 
+
+We anticipate SMaaS clients will fall into one or more of the following access patterns:
+
+\textbf{Dashboard/Reporting}: Common metrics are pushed to persistent storage or pulled from a client into a structured format for charting and analysis.
+
+\textbf{Batch}: Client asynchronously submits a collection of inputs to calculate metrics for, with the target use-case being dataset preparation for supervised learning.
+
+\textbf{Scoring}: Client issues a burst of synchronous requests for each epoch in an unsupervised learning run.  
+
+Attack graph based security metrics are usually studied in isolation, with the metric itself being the desired result. The typical format of an AG metric calculation in the literature is:
+
+Input attack graph $\rightarrow$ Pre-Process (add edge weights to AG)  $\rightarrow$ Compute new metric value $\rightarrow$ Report reusults
+
+% Attack Graph $\rightarrow$Other data as needed $\rightarrow$Compute dependencies for new metric.
+% Do new metric math here
+% Return new metric results
+
+While the processing pipeline for these metrics is typically the same, we have not come across an attempt to generalize these steps in our review of the literature. The lack of a systematic methodology for AG security metric development and analysis produces redundant, stovepiped workflows and is a barrier to progress in the field. One of the contributions of this work is a deployment framework that allows researchers to reuse existing metrics, define dependency graphs for a metric, and develop new metrics quickly using a standard request/response interface format.
+To frame the problem, we consider the CSAF pipeline pictured below, where the output of the Predictive Model in the last step is Expected Path Length(EPL). The author provides an implementation in R that includes inline the Stochastic Model in the form of a weighted transition matrix. 

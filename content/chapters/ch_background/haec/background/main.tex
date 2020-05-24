@@ -1,0 +1,15 @@
+
+
+
+TEEs provide a hardware root of trust as the basis for encryption and attestation primitives. Sensitive applications running in a TEE context remain encrypted outside of the CPU package. As an analogy, consider how full disk encryption prevents access to data on a hard drive even if an attacker possesses the physical disk. Similarly, TEEs prevent access to code and data \textit{in execution}, even if the attacker has elevated privileges on the host. 
+
+Given this premise, the implications are extensive. Access to code running in a trusted enclave is shielded from attackers and malware that may have gained administrative accounts on the system. Likewise, virtualized applications running in a VM or container can provide strong security guarantees to clients through attestation, preventing public cloud IaaS providers from accessing sensitive data from the underlying hypervisor. 
+
+
+
+
+% For example, SGX was introduced in September 2015 and comes packaged with all 7th gen and later Intel Core processors - including recent RDT\&E assets. 
+
+% such as exposure to side-channel attacks and 3rd party trust requirements, and develop novel techniques to address those barriers while preserving the integrity and confidentiality guarantees TEEs provide. After undergoing rigorous feasibility analysis within the first year, efforts will focus on applying the results to domains of interest within the command. Specifically, we are targeting secure implementations of mobile access edge computing (MEC) network functions and analytics services for proof of concept.
+
+

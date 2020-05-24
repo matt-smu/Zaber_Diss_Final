@@ -1,0 +1,30 @@
+
+
+
+
+\begin{figure}[ht]
+  \centering
+  \begin{bytefield}{32}
+    \bitheader{0,7-8,15-16,23-24,31} \\
+    \begin{rightwordgroup}{transport \\ header}
+      \bitbox{8}{protocol version} &
+      \bitbox{8}{packet type} &
+      \bitbox{8}{type modifier} &
+      \bitbox{8}{client channel} \\
+      \wordbox{1}{source connection identifier} \\
+      \wordbox{1}{destination connection identifier} \\
+      \wordbox{1}{message acceptance criteria} \\
+      \wordbox{1}{heartbeat} \\
+      \bitbox{16}{window} &
+      \bitbox{16}{retention}
+    \end{rightwordgroup} \\
+  \begin{rightwordgroup}{data \\ fields}
+    \wordbox[lrt]{1}{%
+     {(data content and format dependent on packet type and modifier)}} \\
+    \skippedwords \\
+    \wordbox[lrb]{1}{} 
+  \end{rightwordgroup}
+  \end{bytefield}
+  \caption{MTP packet format}
+  \label{fig:bits_tcp}
+\end{figure}

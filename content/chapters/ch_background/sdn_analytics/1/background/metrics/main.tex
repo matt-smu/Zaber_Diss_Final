@@ -1,0 +1,29 @@
+NIST 800-55\cite{Swanson_Bartol_Sabato_Hash_Graffo_2003} describes security metrics as "tools designed to facilitate decision making and improve performance and accountability through collection, analysis, and reporting of relevant performance-related data. IT security metrics must be based on IT security performance goals and objectives." This section reviews available attack graph based metrics through the lens of potential security goals and objectives an IA security officer might use to evaluate a system's security posture. Typically these security goals can be modeled in an attack graph using the attacker's intent and target objectives. We also take this opportunity to establish the notation used throughout the paper. Table \ref{tab:metric_summary} provides a brief summary of selected metrics: 
+\begin{table}[ht]
+\caption{Metrics Summary}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+Metric Class & Description & Common Measurements \\ \midrule
+Structural & Metrics based on the structure of the attack graph; used to identify attributes like shortest path, mean path length, or total number of paths. & SP, NP, MPL \\
+Time-Based & Metrics that quantify time expectations for attributes like compromise, recovery, or incident response. & MTTF, MTTB, MTTR \\
+Probability-Based & Metrics that associate probabilities attack paths to quantify the security of the network. & NR, PP, EPL \\
+Temporal & Metrics that examine  vulnerability age on the system. & TAG \\ \bottomrule
+\end{tabular}%
+}
+% \label{tab:metric_summary}
+\end{table}
+
+% \begin{table}[H]
+% \begin{tabular}{p{3.2cm}p{8cm}p{3cm}p{3cm}}
+% %{@{}llll@{}}
+% \toprule
+% Metric Class & Description & Common Measurements   \\ \midrule
+% Structural & Metrics based on the structure of the attack graph; used to identify attributes like shortest path, mean path length, or total number of paths. & SP, NP, MPL   \\
+% Time-Based  & Metrics that quantify time expectations for attributes like compromise, recovery, or incident response. & MTTF, MTTB, MTTR   \\
+% Probability-Based  & Metrics that associate probabilities attack paths to quantify the security of the network. & NR, PP, EPL   \\
+% Temporal & Metrics that examine  vulnerability age on the system. & TAG   \\ \bottomrule
+% \end{tabular}
+% \caption{Metrics Summary}
+% \label{tab:metric_summary}
+% \end{table}

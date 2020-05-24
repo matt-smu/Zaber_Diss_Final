@@ -1,0 +1,68 @@
+
+% \input{content/contrib/inrfa/main.tex}
+
+% \input{content/contrib/inrfa/infra_attacks.tex}
+
+% \input{content/contrib/inrfa/infra_model.tex}
+
+
+The system model used by MulVal abstracts network infrastructure into a set of access control rules of the form \verb|hacl(_src, _dst, _prot, _port)|. This \verb|hacl/4| is a MulVal atomic \textit{primitive}, which to us means that it should be provided as input to the run. Horn clauses\cite{Chandra_Harel_1985} of the form $A\xleftarrow[]{} B_1, B_2,\dots, B_n $ are the foundation of MulVal's reasoning system. \textit{Facts} (primitive or derived) on the right-hand-side specify a relationship described by the term on the left-hand-side. \textit{Interaction Rules} in the framework wrap the Horn clause in a tuple with description and labeled weight metadata needed for attack graph processing and rendering. We use the terms interchangeably within this paper unless otherwise noted, and present the unwrapped form when discussing interaction rules for clarity.  The following Horn clause derives facts about network accessibility:
+ \begin{verbatim}
+ netAccess(P, H1, H2, Protocol, Port) :- execCode(P, H1 _User),
+                                         hacl(H1, H2, Protocol, Port).
+ \end{verbatim}
+This statement can be read: \textit{Principal \textbf{P} has network access from host \textbf{H1} to host \textbf{H2} on \textbf{Port} using \textbf{Protocol} if \textbf{P} can execute code on \textbf{H1} as \textbf{\_User} and \textbf{H1} has access to \textbf{H2} over that \textbf{Port} and \textbf{Protocol}}. An interaction rule provides results for a single query on a relationship. A logic program is a collection of Horn clauses sufficient to cover a desired query space. In MulVal, \verb|meta(attackGoal(_))| is defined up front as the program objective, with the query \verb|findall(Goal, attack_simulation(Goal), L)| responsible for collecting attack traces. 
+
+\begin{lstlisting}[style=datalog, label={lst:mulval_primitives}, caption={Mulval Primitive and Derived Facts}]
+primitive(inCompetent(_principal)).
+primitive(competent(_principal)).
+primitive(clientProgram(_host, _programname)).
+primitive(vulExists(_host, _vulID, _program)).
+primitive(vulProperty(_vulID, _range, _consequence)).
+primitive(hacl(_src, _dst, _prot, _port)).
+primitive(attackerLocated(_host)).
+primitive(hasAccount(_principal, _host, _account)).
+primitive(networkServiceInfo(_host, _program, _protocol, _port, _user)).
+primitive(setuidProgramInfo(_host, _program, _owner)).
+primitive(nfsExportInfo(_server, _path, _access, _client)).
+primitive(nfsMounted(_client, _clientpath, _server, _serverpath, _access)).
+primitive(localFileProtection(_host, _user, _access, _path)).
+primitive(dependsOn(_h, _program, _library)).
+primitive(installed(_h, _program)).
+primitive(bugHyp(_,_,_,_)).
+primitive(vulExists(_machine,_vulID,_program,_range,_consequence)).
+primitive(canAccessFile(_host, _user, _access, _path)).
+primitive(isWebServer(_host)).
+
+derived(execCode(_host, _user)).
+derived(netAccess(_machine,_protocol,_port)).
+derived(canAccessHost(_host)).
+derived(accessFile(_machine,_access,_filepath)).
+derived(accessMaliciousInput(_host, _principal, _program)).
+derived(principalCompromised(_victim)).
+derived(dos(_host)).
+derived(logInService(_host, _protocol, _port)).
+\end{lstlisting}
+
+There is no explicit definition for network infrastructure in MulVal, but there is also no syntax requirement to adhere to the variable naming semantics. Remember that Prolog variables begin with either an upper case letter, or an underscore ('\_'),  and that constants begin with lower case letters. Thus we are free to overload the existing \verb|hacl/4|, and \verb|netAccess/4| predicates to define the Layer 2 and 3 network elements for our desired system model.
+
+\begin{verbatim}
+  hacl(sw1_xe_1_0_2, sw2_xe_1_1_1, vlan, ac_10_20).   
+  hacl(sw1_et_1_0_1, sw_et_1_0_2, vlan, tr_30). 
+  hacl(st2_ge_1_0_2, sw1_ge_1_1_1, vlan, mgmt_1). 
+  hacl(rt2_ge_1_1_2, _, bgp, 179). 
+  hacl(rt2_ge_1_1_2, ospf_grp_1, ospf, 179).
+  hacl(rt3_ge_1_1_2, ospf_grp_1, ospf, 179).
+\end{verbatim}
+
+% We are aware of efforts\cite{Bacic_Froh_Henderson_2006,Henderson_Bacic_Froh_2005} to define these network elements as extensions to MulVal; however, we find the existing Datalog structures sufficient for our analysis without modifying the underlying model. We briefly discuss our reasoning and refer to the core and edge network designs found in \cite{Donovan_Prabhu_2017} for reference. 
+
+%MulVal is primarily concerned with application layer attacks, with the primary effects of a successful attack being remote code execution and privilege escalation. In core and transit networks, the target is typically DoS, hijacking, or eavesdropping.The types of attacks we intend to model influence our syntax decisions.
+
+For example, we can describe switches and routers along with their associated protocols without modification of the existing MulVal rules. This makes intuitive sense since the distinction between these devices becomes less clear when their functionality is virtualized. Having a VM running OpenVSwitch talking to a Layer 3 physical switch over Spanning Tree Protocol shouldn't require separate definitions from Layer 2 switches participating in the same protocol. Note this doesn't imply the attack surfaces are the same, and in Secion \ref{subsec:approach:vulns} we make this distinction explicitly. In the examples above we show how existing \verb|hacl/4| primitives can be used to specify VLAN tagged switch ports and OSPF areas for routers ports. The general naming convention to describe elements is underscore delimited, with the first entry describing the element (rt: router, sw: switch, rr: route reflector, ce: customer edge, pe: provider edge, p: provider core). Remaining fields identify the line card, interface, and port uniquely in a device and can be inherited from the organizations standard nomenclature. 
+
+MulVal assumes attacker privilege is monotonically increasing, meaning that through the course of an attack an intruder can not decrease system access through vulnerability exploitation. This is a known\cite[Ch 2.6]{Ou_Appel_2005} effect inherited from Datalog and largely precludes the study of denial-of-service type attacks using the CSAF. That said, the types of attacks we can model using existing constructs still cover a broad range of Layer 2 and Layer 3 vulnerability classes which we define specifically in Section \ref{subsec:approach:vulns}.  
+
+
+Defining the router interfaces as unique \verb|host| entries with distinct \verb|hacl/4| parameters permits us to treat exploit consequences like we would any other system. As an example, consider a provider edge router with an improperly configured access control list. If an attacker located within the attached customer edge network can discover this configuration error, the model reflects the new \verb|netAccess/5| state. In some tests we declare control, data, and management plane interface groups for each device to represent interface groups for simplicity. This naively represents the functionality an attacker would potentially target. By modeling the infrastructure devices this way we can define services on any plane as \verb|networkService/5| and express a compromise leading to unauthorized access of a different plane clearly for use in our trace analysis. 
+

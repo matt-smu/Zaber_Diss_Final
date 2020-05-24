@@ -1,0 +1,11 @@
+%Add this to line 274
+
+\def\@dottedtocline#1#2#3#4#5{\ifnum #1>\c@tocdepth \else
+	\vskip \z@ plus .2pt
+	{\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+		\parindent #2\relax\@afterindenttrue
+		\interlinepenalty\@M
+		\leavevmode
+		\@tempdima #3\relax \advance\hangindent \@tempdima \hbox{}\hskip -\leftskip
+		\loftitle #4\nobreak\leaders\hbox{$\m@th \mkern \@dotsep mu.\mkern \@dotsep
+			mu$}\hfill \nobreak \hbox to\@pnumwidth{\hfil\rm #5}\par}\fi}

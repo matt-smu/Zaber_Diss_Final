@@ -1,0 +1,26 @@
+
+Structural metrics draw conclusions about the security properties of the attack graph through basic graph analysis techniques\cite{Dacier_Deswarte_Kaaniche}\cite{Ortalo_1999}.  
+
+\textbf{Shortest Path (SP):  }
+
+Given an attack graph, the Shortest Path metric identifies the minimum number of nodes (vulnerabilities) an attacker would need to exploit to reach the target. Techniques for finding the shortest path in a graph are well-documented in Computer Science \cite{Dijkstra_1959}.  For the collection of paths, \(p_i\), in an attack graph \(AG\) we define the shortest path as: 
+
+\[SP(AG) = min(len(p1), len(p2), \ldots, len(pi), \ldots, len(pn)) \]
+
+% The shortest path metric could be used by an attacker to identify the most direct route to a target. Another consideration is that an attacker may want to determine shortest paths as part of a minimal cut set algorithm for efficiently intercepting or degrading the target’s communications. 
+
+\textbf{Number of Paths (NP):}  
+
+NP is a count of the unique paths that exist on an attack graph between the attacker and the target. It is a reasonable measure of the risk exposure of the network and provides a sense of how many options an attacker would have available during a targeted attack.  
+\[NP = |p_1, p_2, \ldots, p_i, \ldots, p_n| \] 
+
+\textbf{Mean Path Length (MPL): }
+
+MPL calculates the arithmetic mean of the path lengths on the network as a way to size the average effort required to compromise a target.  
+
+\[MPL = \frac{\sum_{i}len(p_i)}{NP(AG)}\]
+ 
+
+ 
+
+While we can obtain some insight into the security properties of different attack graphs through direct comparison, there is not enough granularity in these structural metrics to determine the characteristic strengths or weaknesses of the underlying security posture. For example, we notice that there is a large discrepancy in the NPL measures among the three graphs; however, we can’t determine conclusively that this makes one model more susceptible to attack without knowing more about how each model’s vulnerability and exploitability relate. Effort has been made [12] to introduce statistical methods into structural metrics as a means for more reliable comparison. 

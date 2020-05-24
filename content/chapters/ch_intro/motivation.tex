@@ -1,0 +1,23 @@
+
+
+
+% \begin{table}[ht]
+% \begin{tabular}{p{3.2cm}p{8cm}p{3cm}p{3cm}}
+% %{@{}llll@{}}
+% \toprule
+% Metric Class & Description & Common Measurements   \\ \midrule
+% Structural & Metrics based on the structure of the attack graph; used to identify attributes like shortest path, mean path length, or total number of paths. & SP, NP, MPL   \\
+% Time-Based  & Metrics that quantify time expectations for attributes like compromise, recovery, or incident response. & MTTF, MTTB, MTTR   \\
+% Probability-Based  & Metrics that associate probabilities attack paths to quantify the security of the network. & NR, PP, EPL   \\
+% Temporal & Metrics that examine  vulnerability age on the system. & TAG   \\ \bottomrule
+% \end{tabular}
+% \caption{Metrics Summary}
+% \label{tab:metric_summary}
+% \end{table}
+
+Security is a cross cutting concern now more than ever. Globally connected information systems from critical infrastructure to social networks provide unprecedented access to people, things, and ideas. A key driver of this growth is the commodification of virtualization, allowing systems to scale across the world almost instantaneously. System administrators can manage the deployment and provisioning of many thousands of heterogeneous nodes through a single code base. Network engineers can verify topology changes and develop new communication protocols without interfering with production systems. Scientists can see results from large scale experiments faster and without the procurement and upkeep overhead of maintaining an in house compute cluster. The availability of near limitless global resources has had an impact on all aspects of computer science, network management, and information technology, with security being no exception.
+
+Whether we are designing a new system from the ground up, re-architecting a legacy system for migration to the cloud, bringing a system up to regulatory compliance, or simply modernizing fleet equipment, it is necessary to define the criteria with which to measure the efficacy of the resulting solution. Often the metrics used in these decisions are based on performance or cost, with security considerations assessed during a separate compliance evaluation. In this work we consider security metrics as analogues of other system performance characteristics like network latency or CPU clock speed, with similar expectations to establish security benchmarks, sample security measurements over time, evaluate trade offs between metrics, and verify minimum security levels for a system under our control. 
+
+% The motivation of this thesis is to make modern information systems more secure, and the driving force behind that goal is automation. Many of the problems addressed in this work stem from the disparate ecosystem of tools, APIs, methodologies, libraries, and frameworks that exist in relative isolation to one another. Consider Security Information and Event Management (SIEM) systems as an example, which provide correlation of host/network event logs, IDS/IPS alerts, threat/vulnerability feeds, etc, and present a unified view of the system’s security posture automatically to the SOC. Before the advent of managed SIEMs, sys admins typically filled the role of security engineers, and relied on hand rolled collections of shell/perl scripts to manage systems, parse logs, collect or push events, format reports, and issue alarms. To be effective required tribal knowledge along with proficiency in programming, network plumbing, and systems management, so changes to the environment or workforce made it extremely difficult(expensive) to deliver continuous monitoring capabilities to operators at any scale. 
+% We are in a similar state today with network design and enterprise planning. Infrastructure-as-Code, SDN, virtualization and containerization are all critical components in modern deployments, but the glue that ties them together is largely ad-hoc, and risk evaluation is still a manual task. In order to understand the security posture before a system is rolled out and SIEMs are in place, we are creating a tool to facilitate the automated analysis, collection, correlation, and dissemination of the security metrics mentioned above. The necessity of such a tool is critical to evaluating the efficacy of the metrics reviewed above, and provides the foundation for ongoing research in machine learning models for secure systems planning, design, and evolution.

@@ -1,0 +1,22 @@
+Our findings from the structural algorithms for the three network models under test can be found in Table \ref{tab:sp_results}. 
+
+The shortest path (SP) metric counts the fewest number of exploits needed for an attacker to reach the target. It can provide insight into the overall risk profile of a network without considering the attacker's skill level or the exploitability scores of vulnerabilities in the system. Our results show the current model requires more successful attempts than either the transition or final phase models. Likewise, the mean path length (MPL) metric is the arithmetic mean of the number of exploits over all distinct attack paths, and can be used as an estimate for the average number of successful attempts needed to reach the target. 
+
+When taken on their own the SP and MPL metrics may suggest the current architecture is slightly more secure, or at least it will cost an attacker more in terms of time to compromise the current system. The number of paths (NP) metric adds a bit of context to the SP finding by counting the number of distinct paths available to an attacker. Our NP results listed in Table \ref{tab:sp_results} indicate that, while the current architecture requires a higher number of successful exploits in the worst case, it also contains significantly more options available for an attacker to ultimately reach the target. In the case of the final architecture model, only a single distinct attack path exists, which implies significantly less exposure to the network.
+
+
+
+
+%Theoretically, it could also be used by an attacker to identify the most direct route to a target. Another consideration is that an attacker may want to determine shortest paths as part of a minimal cut set algorithm for efficiently intercepting or degrading the target’s communications. The shortest path metric could be used by an attacker to identify the most direct route to a target. Another consideration is that an attacker may want to determine shortest paths as part of a minimal cut set algorithm for efficiently intercepting or degrading the target’s communications. 
+
+\begin{table}[ht]
+\caption{Structural Metric Results Summary}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Structural Path Metric & Current & Transition & Final &  \\ \midrule
+Shortest Path (SP) & 4 & 3 & 3 &  \\
+Number of Paths (NP) & 6 & 3 & 1 &  \\
+Mean Path Length (MPL) & 5.33 & 4 & 3 &  \\ \bottomrule
+\end{tabular}
+\label{tab:sp_results}
+\end{table}

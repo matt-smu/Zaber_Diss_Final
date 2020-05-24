@@ -1,0 +1,207 @@
+%===========================================================
+%
+% Dedman/Lyle LaTeX Dissertation Template, v.2016
+% Structure organized by Ted C. Munger (TCM)
+%
+%===========================================================
+%===========================================================
+% BEGIN Document Style
+%===========================================================
+\documentclass[12pt]{report}
+
+  \usepackage{meta/DL_thesis_v2016}  % TCM Global Style for particular SMU College, e.g. DL_thesis_v2016.sty
+
+  \input{meta/packages.tex}               % Packages File
+
+  \geometry{letterpaper, margin=1in} % TCM Dedman/Lyle Standard 2016
+
+
+  \linespread{1.6}
+  \setcounter{secnumdepth}{4} % TCM Sets number subsections
+  \setcounter{tocdepth}{4}    % TCM Set the number of subsections in TOC
+  
+   \urlstyle{same} % TCM Set URL style to same font as text verses mono-spaced, i.e., courier
+
+%===========================================================
+% END Document Style
+%===========================================================
+%===========================================================
+% BEGIN Insert Custom Commands
+%===========================================================
+  \input{meta/customcommands.tex}        %  File of global custom commands
+  
+\lstset
+{ %Formatting for code in appendix
+    language=prolog,
+    basicstyle=\footnotesize,
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    tabsize=1,
+    breaklines=true,
+    breakatwhitespace=false,
+}
+  
+  % include syntax styles for code listings
+\input{meta/yaml_syntax.tex}
+\input{meta/datalog_syntax.tex}
+\input{meta/json_syntax.tex}
+%===========================================================
+% END Insert Custom Commands
+%===========================================================
+%===========================================================
+% BEGIN Code to Minimize Error Warnings
+%===========================================================
+%-----------------------------------------------------------
+% BEGIN Reduce compile warnings for overfull and underfull hboxes & vboxes
+%       Adjust up or down to fit your specific needs TCM
+%-----------------------------------------------------------
+  \hbadness=50000
+  \vbadness=50000
+  \hfuzz=150pt
+%-----------------------------------------------------------  
+% END Reduce compile warnings for overfull and underfull hboxes TCM
+%-----------------------------------------------------------
+%-----------------------------------------------------------
+% BEGIN eliminate compile warnings for noindent hfill hbox in PDF bookmarks TCM
+%-----------------------------------------------------------
+  \pdfstringdefDisableCommands{
+  \def\hbox{ }                      % hyperref (temporarily) changes \hbox to a space in this context.
+  \def\hfill{ }                     % hyperref (temporarily) changes \hfill to a space in this context.
+  \def\noindent{ }                  % hyperref (temporarily) changes \noindent to a space in this context.
+  \def\hskip{ }                     % hyperref (temporarily) changes \hskip to a space in this context.
+  }
+%-----------------------------------------------------------
+% END eliminate compile warnings for noindent hfill hbox in PDF bookmarks TCM
+%-----------------------------------------------------------
+%===========================================================
+% END Code to Minimize Error Warnings
+%===========================================================
+
+% \thesisdraft                       % TCM uncomment if want draft printing
+
+% %============
+% % begin texcount stats 
+% %=============
+
+% %% You can pass in your own texcount params, e.g. -chinese to turn on Chinese mode, or -char to do a character count instead (which does NOT include spaces!)
+% %%% http://app.uio.no/ifi/texcount/documentation.html
+
+% %% To include references. DO NOT USE WITH BIBLATEX 
+% %TC:incbib
+
+% %% To include tabulars in main text count.
+% %TC:group table 0 1
+% %TC:group tabular 1 1
+
+% \newcommand{\detailtexcount}[1]{%
+%   \immediate\write18{texcount -merge -sum -q #1.tex output.bbl > #1.wcdetail }%
+%   \verbatiminput{#1.wcdetail}%
+% }
+
+% \newcommand{\quickwordcount}[1]{%
+%   \immediate\write18{texcount -1 -sum -merge -q #1.tex output.bbl > #1-words.sum }%
+%   \input{#1-words.sum} words%
+% }
+
+% %   -sum, -sum=   Make sum of all word and equation counts. May also use
+% %              -sum=#[,#] with up to 7 numbers to indicate how each of the
+% %              counts (text words, header words, caption words, #headers,
+% %              #floats, #inlined formulae, #displayed formulae) are summed.
+% %              The default sum (if only -sum is used) is the same as
+% %              -sum=1,1,1,0,0,1,1.
+
+
+% \newcommand{\quickcharcount}[1]{%
+%   \immediate\write18{texcount -1 -sum -merge -char -q #1.tex output.bbl > #1-chars.sum }%
+%   \input{#1-chars.sum} characters (not including spaces)%
+% }
+% %============
+% % begin texcount stats 
+% %=============
+
+%preamble
+% \usepackage{tocbibind}
+ 
+%content
+% \tableofcontents
+% \listoffigures
+% \listoftables
+
+%===========================================================
+% BEGIN Document
+%===========================================================
+
+\input{content/ref/references.tex}
+
+\begin{document}
+
+
+% %% You can use these special %TC: tags to ignore certain parts of the text.
+% %TC:ignore
+% \section*{Word Counts}
+
+% This section is \textit{not} included in the word count.
+
+% \quickwordcount{main}
+
+% \quickcharcount{main}
+
+% \detailtexcount{main}
+% %TC:endignore
+
+
+
+%-----------------------------------------------------------
+%   Front pages of thesis
+%-----------------------------------------------------------
+  \input{content/FrontPages}       %   i. Front Pages File
+
+%-----------------------------------------------------------
+%   Body of the thesis
+%-----------------------------------------------------------
+  \begin{thesis}
+
+%-----------------------------------------------------------
+%      Chapters are included here
+%-----------------------------------------------------------
+%   \input{chapters/chap1.tex}        %  1. Chapter 1 
+   
+%   \input{chapters/chap2.tex}        %  2. Chapter 2
+    \input{content/chapters/main.tex}
+
+%-----------------------------------------------------------
+%   Appendices go here if no appendix, remove \StartAppendix
+%-----------------------------------------------------------
+   \StartAppendix           %  All chapters from this point are treated as appendices
+   
+  \input{content/appendices/main.tex}          %  Appendix A
+
+%-----------------------------------------------------------
+%   Bibliography goes below
+%   Check with specific department on the appropriate
+%   bibliography style to use
+%-----------------------------------------------------------
+  \nocite{*}
+%   \bibliographystyle{acm}
+   \raggedright
+%   \footnotesize           % For smaller font on Bibliography
+%   \bibliography{content/ref/dedmanbib}
+    \printbibliography
+    
+    
+%   \normalsize             % Uncomment to return to normal font after smaller font
+
+%-----------------------------------------------------------
+%   END body of the thesis
+%-----------------------------------------------------------
+  \end{thesis}
+
+%===========================================================
+%   END thesis document
+%===========================================================
+
+\end{document}
+%===========================================================
+% END Document
+%===========================================================

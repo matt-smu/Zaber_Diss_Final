@@ -1,0 +1,173 @@
+% We now enumerate some of the possible attack vectors for our network models. Table \ref{tab:threats} identifies potential threats to determine what network elements might be targeted and by what means they could be exploited. Grouping potential threats by OSI Layer enables us to narrow our analysis to potential targets an attacker may seek to compromise, although as discussed earlier these are not hard boundaries in our migration. This research assumes the attack originates from the internet or within an attached customer site and that the attacker has no privileged access to the provider network. To model internal threats, we would modify the model with the appropriate origin and network privileges given to the attacker.  
+
+% Table \ref{tab:threats} lists some common attacks against Layer 2 and 3 networks. As discussed in Section \ref{subsec:contribs:modeling}, an attacker's motivation 
+
+% % Vulns
+% \begin{table}[ht]
+% \caption{Potential Threats}
+% \resizebox{.4\textwidth}{!}{%
+% % \begin{small}
+% \begin{tabular}{@{}lll@{}}
+% \toprule
+% % Layer 2 & Layer 3  &  \\ \midrule
+% VLAN Hopping & ACL Bypass \\
+% STP Injection & BGP Hijacking \\
+% ARP Cache Poisoning & Route Table Poisoning &  \\
+% MAC Flooding & SYN Flooding &  \\
+% CAM Overflow & Packet Crafting &  \\
+% MAC/DHCP Spoofing & IP Spoofing &  \\
+% %MPLS Attachment Point &  IPSec AH/IKE \\ 
+% \bottomrule
+% \end{tabular}%
+% % \end{small}
+% }
+% \label{tab:threats}
+% \end{table}
+
+
+The Common Vulnerability Scoring System\cite{Mell07thecommon} (CVSS) is an open framework used throughout government and industry to report the severity of specific security vulnerabilities. CVSS scores range from 0 to 10 based on the vulnerability’s exploitability and impact, with a score of 10 signifying the highest severity.  Exploitability is calculated by determining the access vector, access complexity, and number of authentication attempts required to exploit the vulnerability, with higher exploitability values equating to an easier compromise. Impact scores are determined by identifying the scope of a successful exploit on the vulnerable system’s confidentiality, integrity, and availability. CVSS scores used in this research were queried using a local copy of the National Vulnerability Database (NVD) synchronized via MulVal's built-in mechanism and augmented with scores provided by vendors when an official Common Vulnerability Enumeration (CVE) designation was not available.  
+
+MulVal was originally designed with enterprise network security in scope, but recent research\cite{Acosta_Padilla_Homer_2016, Bacic_Froh_Henderson_2006, Henderson_Bacic_Froh_2005} has provided extensions that allow for modelling of individual network infrastructure attacks. In 2019 \cite{Stan_Bitton_Ezrets_Dadon_Inokuchi_Ohta_Yamada_Yagyu_Elovici_Shabtai_2019} presented a coherent set of facts and rules for modeling Layer 1-3 attacks in communication networks which provides the needed semantics to define the threats posed in Table \ref{tab:threats}. 
+
+The network vulnerabilities listed in Table \ref{tab:vulns_01} have been identified to represent the types of attacks within the scope of this project. Our intent is to identify which types of attacks are mitigated by moving to SDN and what unplanned attacks are introduced. To aid in this analysis we add potential vulnerabilities (eg, ACL misconfigurations, 0-days, negligent admins, etc…) by assigning a theoretical CVSS score to the vulnerability and adding it to the network model.  
+
+
+% \begin{table}[ht]
+% \caption{Hypothetical Vulnerabilities}
+% \resizebox{.6\textwidth}{!}{%
+% \begin{tabular}{@{}llll@{}}
+% \toprule
+% CVE ID & Vulnerability Description & Affected Hosts &  \\ \midrule
+% CVE-2012-1342 & ACL Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2011-4012 & ACL Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2011-2395 & Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2010-4685 & Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2007-5381 & BoF (remote code execution) & IOS 12.0 &  \\
+% CVE-2007-4295 & Malformed Packet (remote code execution) & IOS 12.0 &  \\
+% CVE-2015-0694 & NACL Bypass (privilege escalation) & IOS XR &  \\
+% CVE-2014-3396 & ACL Bypass (privilege escalation) & IOS XR &  \\
+% CVE-2013-3464 & BoF (remote code execution) & IOS XR &  \\
+% CVE-2013-1234 & BoF/DoS (remote code execution) & IOS XR &  \\
+% CVE-2014-6379 & RADIUS Bypass (privilege escalation) & JunOS &  \\
+% CVE-2014-3818 & BoF (remote code execution) & JunOS &  \\
+% CVE-2014-3816 & (privilege escalation -\textbackslash{}textgreater authenticated user) & JunOS &  \\
+% CVE-2013-6618 & Remote code execution & JunOS &  \\ \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:hyp_vulns_01}
+% \end{table}
+
+% \begin{table}[ht]
+% \caption{Vulnerabilities}
+% \resizebox{.48\textwidth}{!}{%
+% \begin{tabular}{@{}llll@{}}
+% \toprule
+% CVE ID & Vulnerability Description & Affected Hosts &  \\ \midrule
+% CVE-2012-1342 & ACL Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2011-4012 & ACL Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2011-2395 & Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2010-4685 & Bypass (privilege escalation) & IOS 12.0 &  \\
+% CVE-2007-5381 & BoF (remote code execution) & IOS 12.0 &  \\
+% CVE-2007-4295 & Malformed Packet (remote code execution) & IOS 12.0 &  \\
+% CVE-2015-0694 & NACL Bypass (privilege escalation) & IOS XR &  \\
+% CVE-2014-3396 & ACL Bypass (privilege escalation) & IOS XR &  \\
+% CVE-2013-3464 & BoF (remote code execution) & IOS XR &  \\
+% CVE-2013-1234 & BoF/DoS (remote code execution) & IOS XR &  \\
+% CVE-2014-6379 & RADIUS Bypass (privilege escalation) & JunOS &  \\
+% CVE-2014-3818 & BoF (remote code execution) & JunOS &  \\
+% CVE-2014-3816 & (privilege escalation -\textbackslash{}textgreater authenticated user) & JunOS &  \\
+% CVE-2013-6618 & Remote code execution & JunOS &  \\ 
+% \midrule
+% CVE-2015-7501 & ODL remote code execution & OpenDaylight &  \\
+% CVE-2015-4000 & ODL MitM (priv escalation/remote code exec) & OpenDaylight &  \\
+% CVE-2015-1778 & ODL Auth Bypass (priv esc/remote code exec) & OpenDaylight &  \\
+% USN-2949-1 & \makecell{use-after-free vulnerability in the Linuxkernel's \\ CXGB3 driver(DoS, remote code execution)} & Ubuntu 14.0.4 &  \\
+% CVE-2014-9769 & PCRE regex (DoS, remote code execution) & Ubuntu 14.0.4 &  \\
+% CVE-2010-2784 & RHEV/KVM local priv escalation, DoS & RHEV 2.2/KVM 83 &  \\
+% CVE-2014-6271/7169 & DoS/remote code execution (ShellShock) & Bash 4.3 &  \\ 
+% \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:vulns_01}
+% \end{table}
+
+After reviewing known CVE’s to identify attack vectors, we apply hypothetical vulnerabilities to the proposed networks which affect the newly introduced architecture components. Table \ref{tab:hyp_vulns} lists examples which would reflect the threats identified during migration. 
+
+% \begin{table}[ht]
+% \caption{Final State Vulnerabilities}
+% \resizebox{.6\textwidth}{!}{%
+% \begin{tabular}{@{}llll@{}}
+% \toprule
+% CVE ID & Vulnerability Description & Affected Hosts &  \\ \midrule
+% CVE-2015-7501 & ODL remote code execution & OpenDaylight &  \\
+% CVE-2015-4000 & ODL MitM (priv escalation/remote code exec) & OpenDaylight &  \\
+% CVE-2015-1778 & ODL Auth Bypass (priv esc/remote code exec) & OpenDaylight &  \\
+% USN-2949-1 & \makecell{use-after-free vulnerability in the Linuxkernel's \\ CXGB3 driver(DoS, remote code execution)} & Ubuntu 14.0.4 &  \\
+% CVE-2014-9769 & PCRE regex (DoS, remote code execution) & Ubuntu 14.0.4 &  \\
+% CVE-2010-2784 & RHEV/KVM local priv escalation, DoS & RHEV 2.2/KVM 83 &  \\
+% CVE-2014-6271/7169 & DoS/remote code execution (ShellShock) & Bash 4.3 &  \\ \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:final_state_vulns}
+% \end{table}
+
+
+In addition to network resources and connectivity attributes, vulnerability data is also assigned to each host. Vulnerability information has the form \Verb[breaklines]`vulProperty(vulnID, accessType, effect)` and can be assigned to one or more hosts \Verb[breaklines]`vulExists(host, vulnID, program)`, where services running on a host are defined as \Verb[breaklines]`networkService(host, program, protocol, port, userPriv)`
+
+Example vulnerability definitions for the network elements listed can be found in Table \ref{tab:hyp_vulns}. For this analysis we assigned the same vulnerabilities to the Transition and Final State network elements and only altered the connections between hosts and the related protocols as specified in the PPS listings above. Within our preliminary experiment parameters the result was that \textit{no attack path could be found between the attacker and the target}. While this finding is in itself interesting, to facilitate analysis we have introduced theoretical vulnerabilities into the Current, Transition, and Final network models as described below to demonstrate the end-to-end CSAF flow.   
+
+
+
+% \begin{table}[H]
+% \caption{Hypothetical Vulnerabilities}
+% \captionsetup{font=small,skip=0.25\baselineskip}
+% \footnotesize
+% \setlength\tabcolsep{5pt}
+% \resizebox{.5\textwidth}{!}{%
+% \begin{tabular}{p{0.1\linewidth}p{0.3\linewidth}p{0.2\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
+% \toprule
+% Vulnerability Class & Examples & Possible Effect & Exploitability & Impact \\ \midrule
+% ACL Bypass & Misconfigured ACLs on PE devices could allow an attacker to send packets addressed to core network elements. &  Privilege escalation Remote Code Execution & Low & Medium \\
+% BoF & Crafted ICMP packets could exploit BoF in core network Control Plane interface &  Remote Code Execution & Medium & Low \\
+% BoF & PEVRF  buffers could be exhausted if client route tables are larger than the PE memory can handle &  Remote Code Execution (CE\textless{}-\textgreater{}PE attachment)DoS & Medium & Low \\ \midrule
+% BoF & PEVRF buffers could be exhausted if client route tables are larger than the PE memory can handle & Remote Code Execution DoS & Medium & Hi\\
+% MitM & Improper label assignment on PE allows attacker to manipulate tunnel access &  Privilege Escalation Privacy Integrity loss & Hi & Low\\ 
+% \midrule
+% BoF & PEVRF  buffers could be exhausted or malformed CE route information could be passed up to SDN controller/VNF & Remote Code Execution (CE\textless{}-\textgreater{}PE attachment)DoS & Medium & Hi \\
+% MitM & SouthboundAPI calls can be intercepted, mangled, forged, or replayed noSSL/TLS & Privilege Escalation & Hi & Medium \\
+% RemoteCode Execution & Commodity HW/OS remote exploit on SDN Controller & PrivilegeEscalation Remote Code Execution & Hi & Low &  \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \label{tab:hyp_vulns}
+% \end{table}
+
+
+% \begin{table}[H]
+% \caption{Transition Hypothetical Vulnerabilities}
+% \captionsetup{font=small,skip=0.25\baselineskip}
+% \footnotesize
+% \setlength\tabcolsep{5pt}
+% \begin{tabular}{p{0.1\linewidth}p{0.3\linewidth}p{0.2\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
+% \toprule
+% Vulnerability Class & Examples & Possible Effect & Exploitability & Impact\\ \midrule
+% BoF & PEVRF buffers could be exhausted if client route tables are larger than the PE memory can handle & Remote Code Execution DoS & Medium & Hi\\
+% MitM & Improper label assignment on PE allows attacker to manipulate tunnel access &  Privilege Escalation Privacy Integrity loss & Hi & Low\\ \bottomrule
+% \end{tabular}%
+% \label{tab:hyps_trans}
+% \end{table}
+
+% \begin{table}[H]
+% \caption{Final Hypothetical Vulnerabilities}
+% \captionsetup{font=small,skip=0.25\baselineskip}
+% \footnotesize
+% \setlength\tabcolsep{5pt}
+% \begin{tabular}{p{0.1\linewidth}p{0.3\linewidth}p{0.2\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
+% \toprule
+% Vulnerability Class & Examples & Possible Effect Exploitability & Impact \\ \midrule
+% BoF & PEVRF  buffers could be exhausted or malformed CE route information could be passed up to SDN controller/VNF & Remote Code Execution (CE\textless{}-\textgreater{}PE attachment)DoS & Medium & Hi \\
+% MitM & SouthboundAPI calls can be intercepted, mangled, forged, or replayed noSSL/TLS & Privilege Escalation & Hi & Medium \\
+% RemoteCode Execution & Commodity HW/OS remote exploit on SDN Controller & PrivilegeEscalation Remote Code Execution & Hi & Low &  \\ \bottomrule
+% \end{tabular}%
+% \label{tab:hyps_fin}
+% \end{table}

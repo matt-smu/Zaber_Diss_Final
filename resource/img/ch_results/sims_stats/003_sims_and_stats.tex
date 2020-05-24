@@ -1,0 +1,1602 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{003\_sims\_and\_stats}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{Title: Simulations for
+Metrics}\label{title-simulations-for-metrics}
+
+\subsubsection{Purpose: Show how metric sims
+happen}\label{purpose-show-how-metric-sims-happen}
+
+\subsubsection{Author: @mjz}\label{author-mjz}
+
+    \subsection{Global imports and notebook setup
+here}\label{global-imports-and-notebook-setup-here}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} python libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k+kn}{import} \PY{n+nn}{logging}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{n}{SEP} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{sep}
+\PY{k+kn}{import} \PY{n+nn}{sys}
+\PY{k+kn}{import} \PY{n+nn}{uuid}
+\PY{k+kn}{import} \PY{n+nn}{pathlib}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} notebook libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{networkx} \PY{k}{as} \PY{n+nn}{nx}
+\PY{k+kn}{import} \PY{n+nn}{graphviz}
+\PY{k+kn}{import} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{as} \PY{n+nn}{st}
+\PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{special}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{c+c1}{\PYZsh{} \PYZsh{} bokeh plotting setup}
+\PY{c+c1}{\PYZsh{} import bokeh.io}
+\PY{c+c1}{\PYZsh{} import bokeh.plotting}
+\PY{c+c1}{\PYZsh{} import bokeh.application}
+\PY{c+c1}{\PYZsh{} import bokeh.application.handlers}
+\PY{c+c1}{\PYZsh{} bokeh.io.output\PYZus{}notebook()}
+\PY{c+c1}{\PYZsh{} notebook\PYZus{}url = \PYZsq{}localhost:8888\PYZsq{}}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} data connectors \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{} bq \PYZhy{}\PYZhy{}}
+\PY{k+kn}{from} \PY{n+nn}{google}\PY{n+nn}{.}\PY{n+nn}{cloud} \PY{k+kn}{import} \PY{n}{bigquery}
+\PY{c+c1}{\PYZsh{} \PYZpc{}reload\PYZus{}ext google.cloud.bigquery \PYZsh{} \PYZpc{}\PYZpc{}bigquery df}
+\PY{c+c1}{\PYZsh{} os.environ[\PYZsq{}GOOGLE\PYZus{}APPLICATION\PYZus{}CREDENTIALS\PYZsq{}] = key\PYZus{}loc \PYZsh{} bq\PYZus{}client needs this (svc\PYZus{}acct auth)}
+\PY{c+c1}{\PYZsh{} bigquery\PYZus{}client = bigquery.Client(project=proj) \PYZsh{} }
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{} influx\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} from influxdb import InfluxDBClient}
+\PY{c+c1}{\PYZsh{} from influxdb import DataFrameClient}
+\PY{c+c1}{\PYZsh{} client = InfluxDBClient(\PYZsq{}192.168.0.115\PYZsq{}, \PYZsq{}8086\PYZsq{})}
+\PY{c+c1}{\PYZsh{} dbs = client.get\PYZus{}list\PYZus{}database()}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{} mongo\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} import pymongo }
+\PY{c+c1}{\PYZsh{} from pymongo import MongoClient}
+\PY{c+c1}{\PYZsh{} client = MongoClient(\PYZsq{}localhost\PYZsq{}, 27017)}
+\PY{c+c1}{\PYZsh{} print(client.list\PYZus{}database\PYZus{}names())}
+
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} project libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{py\PYZus{}mulval\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/src}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{py\PYZus{}mulval\PYZus{}path}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Just importing for their flags right now}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{py\PYZus{}mulval} \PY{k}{as} \PY{n+nn}{py\PYZus{}mulval}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{boromir} \PY{k}{as} \PY{n+nn}{boromir}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{log\PYZus{}util} \PY{k}{as} \PY{n+nn}{log\PYZus{}util}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{mulpy} \PY{k}{as} \PY{n+nn}{mulpy}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{as} \PY{n+nn}{secmet}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{attack\PYZus{}graph} \PY{k}{as} \PY{n+nn}{attack\PYZus{}graph}
+
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval} \PY{k+kn}{import} \PY{n}{flags}
+\PY{n}{FLAGS} \PY{o}{=} \PY{n}{flags}\PY{o}{.}\PY{n}{FLAGS}
+\PY{n}{FLAGS}\PY{p}{(}\PY{p}{[}\PY{n}{sys}\PY{o}{.}\PY{n}{argv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} dont expect cli args from jupyter}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+['/opt/projects/diss/jupyter\_nbs/py36/lib/python3.6/site-
+packages/ipykernel\_launcher.py']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Show an attack graph in this notebook}
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}ag}\PY{p}{(}\PY{n}{ag}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{n}{A} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{nx\PYZus{}agraph}\PY{o}{.}\PY{n}{to\PYZus{}agraph}\PY{p}{(}\PY{n}{ag}\PY{p}{)}
+    \PY{k}{if} \PY{n}{title}\PY{p}{:}
+        \PY{n}{A}\PY{o}{.}\PY{n}{graph\PYZus{}attr}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{label}\PY{o}{=}\PY{n}{title}\PY{p}{,} \PY{n}{labelloc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{top}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{labeljust}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{24}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} A.layout(\PYZsq{}dot\PYZsq{}, args=\PYZsq{}\PYZhy{}Nfontsize=10 \PYZhy{}Nwidth=\PYZdq{}.2\PYZdq{} \PYZhy{}Nheight=\PYZdq{}.2\PYZdq{} \PYZhy{}Nmargin=0 \PYZhy{}Gfontsize=8\PYZsq{})}
+    \PY{n}{args} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    \PYZhy{}Gsize=17}
+\PY{l+s+s2}{    \PYZhy{}Nfontname=Roboto}
+\PY{l+s+s2}{    \PYZhy{}Efontname=Roboto}
+\PY{l+s+s2}{    \PYZhy{}Nfontsize=14}
+\PY{l+s+s2}{    \PYZhy{}Efontsize=14}
+\PY{l+s+s2}{    }\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{A}\PY{o}{.}\PY{n}{layout}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{args}\PY{o}{=}\PY{n}{args} \PY{p}{)}
+    \PY{c+c1}{\PYZsh{} A.draw(self.outputDir + \PYZsq{}/\PYZsq{} + outfilename)}
+    \PY{n}{A}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} plt.show()}
+    \PY{k}{return} \PY{n}{graphviz}\PY{o}{.}\PY{n}{Source}\PY{p}{(}\PY{n}{A}\PY{o}{.}\PY{n}{to\PYZus{}string}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZsh{} Distributions to check, shape constants were taken from the examples on the scipy.stats distribution documentation pages.}
+\PY{c+c1}{\PYZsh{} DISTRIBUTIONS = [}
+\PY{c+c1}{\PYZsh{}     stats.alpha(a=3.57, loc=0.0, scale=1.0), stats.anglit(loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.arcsine(loc=0.0, scale=1.0), stats.beta(a=2.31, b=0.627, loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.betaprime(a=5, b=6, loc=0.0, scale=1.0), stats.bradford(c=0.299, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.burr(c=10.5, d=4.3, loc=0.0, scale=1.0), stats.cauchy(loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.chi(df=78, loc=0.0, scale=1.0), stats.chi2(df=55, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.cosine(loc=0.0, scale=1.0), stats.dgamma(a=1.1, loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.dweibull(c=2.07, loc=0.0, scale=1.0), stats.erlang(a=2, loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.expon(loc=0.0, scale=1.0), stats.exponnorm(K=1.5, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.exponweib(a=2.89, c=1.95, loc=0.0, scale=1.0), stats.exponpow(b=2.7, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.f(dfn=29, dfd=18, loc=0.0, scale=1.0), stats.fatiguelife(c=29, loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.fisk(c=3.09, loc=0.0, scale=1.0), stats.foldcauchy(c=4.72, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.foldnorm(c=1.95, loc=0.0, scale=1.0), stats.frechet\PYZus{}r(c=1.89, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.frechet\PYZus{}l(c=3.63, loc=0.0, scale=1.0), stats.genlogistic(c=0.412, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.genpareto(c=0.1, loc=0.0, scale=1.0), stats.gennorm(beta=1.3, loc=0.0, scale=1.0), }
+\PY{c+c1}{\PYZsh{}     stats.genexpon(a=9.13, b=16.2, c=3.28, loc=0.0, scale=1.0), stats.genextreme(c=\PYZhy{}0.1, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.gausshyper(a=13.8, b=3.12, c=2.51, z=5.18, loc=0.0, scale=1.0), stats.gamma(a=1.99, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.gengamma(a=4.42, c=\PYZhy{}3.12, loc=0.0, scale=1.0), stats.genhalflogistic(c=0.773, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.gilbrat(loc=0.0, scale=1.0), stats.gompertz(c=0.947, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.gumbel\PYZus{}r(loc=0.0, scale=1.0), stats.gumbel\PYZus{}l(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.halfcauchy(loc=0.0, scale=1.0), stats.halflogistic(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.halfnorm(loc=0.0, scale=1.0), stats.halfgennorm(beta=0.675, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.hypsecant(loc=0.0, scale=1.0), stats.invgamma(a=4.07, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.invgauss(mu=0.145, loc=0.0, scale=1.0), stats.invweibull(c=10.6, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.johnsonsb(a=4.32, b=3.18, loc=0.0, scale=1.0), stats.johnsonsu(a=2.55, b=2.25, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.ksone(n=1e+03, loc=0.0, scale=1.0), stats.kstwobign(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.laplace(loc=0.0, scale=1.0), stats.levy(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.levy\PYZus{}l(loc=0.0, scale=1.0), stats.levy\PYZus{}stable(alpha=0.357, beta=\PYZhy{}0.675, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.logistic(loc=0.0, scale=1.0), stats.loggamma(c=0.414, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.loglaplace(c=3.25, loc=0.0, scale=1.0), stats.lognorm(s=0.954, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.lomax(c=1.88, loc=0.0, scale=1.0), stats.maxwell(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.mielke(k=10.4, s=3.6, loc=0.0, scale=1.0), stats.nakagami(nu=4.97, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.ncx2(df=21, nc=1.06, loc=0.0, scale=1.0), stats.ncf(dfn=27, dfd=27, nc=0.416, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.nct(df=14, nc=0.24, loc=0.0, scale=1.0), stats.norm(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.pareto(b=2.62, loc=0.0, scale=1.0), stats.pearson3(skew=0.1, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.powerlaw(a=1.66, loc=0.0, scale=1.0), stats.powerlognorm(c=2.14, s=0.446, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.powernorm(c=4.45, loc=0.0, scale=1.0), stats.rdist(c=0.9, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.reciprocal(a=0.00623, b=1.01, loc=0.0, scale=1.0), stats.rayleigh(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.rice(b=0.775, loc=0.0, scale=1.0), stats.recipinvgauss(mu=0.63, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.semicircular(loc=0.0, scale=1.0), stats.t(df=2.74, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.triang(c=0.158, loc=0.0, scale=1.0), stats.truncexpon(b=4.69, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.truncnorm(a=0.1, b=2, loc=0.0, scale=1.0), stats.tukeylambda(lam=3.13, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.uniform(loc=0.0, scale=1.0), stats.vonmises(kappa=3.99, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.vonmises\PYZus{}line(kappa=3.99, loc=0.0, scale=1.0), stats.wald(loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.weibull\PYZus{}min(c=1.79, loc=0.0, scale=1.0), stats.weibull\PYZus{}max(c=2.87, loc=0.0, scale=1.0),}
+\PY{c+c1}{\PYZsh{}     stats.wrapcauchy(c=0.0311, loc=0.0, scale=1.0)}
+\PY{c+c1}{\PYZsh{} ]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Background Info}\label{background-info}
+
+Sampling from distributions with scipy.stats
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{matplotlib}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{matplotlib}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ggplot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+
+\PY{k}{def} \PY{n+nf}{sample\PYZus{}from\PYZus{}dist}\PY{p}{(}\PY{n}{dist}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+  \PY{k}{if} \PY{n}{dist}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+    \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rate}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{kwargs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)} \PY{o+ow}{and} \PY{n}{kwargs}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{:}
+      \PY{k}{return} \PY{n}{sample\PYZus{}from\PYZus{}dist\PYZus{}exponential}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}
+
+
+\PY{k}{def} \PY{n+nf}{sample\PYZus{}from\PYZus{}dist\PYZus{}exponential}\PY{p}{(}\PY{n}{rate}\PY{o}{=}\PY{o}{.}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+  \PY{k}{return} \PY{n}{st}\PY{o}{.}\PY{n}{expon}\PY{o}{.}\PY{n}{rvs}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{l+m+mi}{10000}\PY{p}{,}\PY{n}{scale}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} source https://ipython\PYZhy{}books.github.io/131\PYZhy{}simulating\PYZhy{}a\PYZhy{}discrete\PYZhy{}time\PYZhy{}markov\PYZhy{}chain/}
+\PY{n}{N} \PY{o}{=} \PY{l+m+mi}{100}  \PY{c+c1}{\PYZsh{} maximum population size}
+\PY{n}{a} \PY{o}{=} \PY{o}{.}\PY{l+m+mi}{5} \PY{o}{/} \PY{n}{N}  \PY{c+c1}{\PYZsh{} birth rate}
+\PY{n}{b} \PY{o}{=} \PY{o}{.}\PY{l+m+mi}{5} \PY{o}{/} \PY{n}{N}  \PY{c+c1}{\PYZsh{} death rate}
+
+\PY{n}{nsteps} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{nsteps}\PY{p}{)}
+\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{25}
+
+
+\PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{nsteps} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+  \PY{k}{if} \PY{l+m+mi}{0} \PY{o}{\PYZlt{}} \PY{n}{x}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{n}{N} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{:}
+      \PY{c+c1}{\PYZsh{} Is there a birth?}
+      \PY{n}{birth} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{a} \PY{o}{*} \PY{n}{x}\PY{p}{[}\PY{n}{t}\PY{p}{]}
+      \PY{c+c1}{\PYZsh{} Is there a death?}
+      \PY{n}{death} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{b} \PY{o}{*} \PY{n}{x}\PY{p}{[}\PY{n}{t}\PY{p}{]}
+      \PY{c+c1}{\PYZsh{} We update the population size.}
+      \PY{n}{x}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{x}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{1} \PY{o}{*} \PY{n}{birth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1} \PY{o}{*} \PY{n}{death}
+  \PY{c+c1}{\PYZsh{} The evolution stops if we reach \PYZdl{}0\PYZdl{} or \PYZdl{}N\PYZdl{}.}
+  \PY{k}{else}\PY{p}{:}
+      \PY{n}{x}\PY{p}{[}\PY{n}{t} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{x}\PY{p}{[}\PY{n}{t}\PY{p}{]}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[<matplotlib.lines.Line2D at 0x7f521093a978>]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{c+c1}{\PYZsh{}https://github.com/anthonymelson/portfolio/blob/32d920e67325501acec6f171ea7762135bd9d599/Comparing\PYZus{}Absorbing\PYZus{}and\PYZus{}Non\PYZus{}Absorbing\PYZus{}Markov\PYZus{}Chains.ipynb}
+\PY{k}{def} \PY{n+nf}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}\PY{p}{:}
+  \PY{n}{stateHistory} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{stateTrack} \PY{o}{=} \PY{p}{[}\PY{n}{state}\PY{p}{]}
+  \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+  \PY{n}{length} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{n}{convergence} \PY{o}{=} \PY{k+kc}{False}
+
+  \PY{k}{while} \PY{n}{convergence} \PY{o}{==} \PY{k+kc}{False} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{iterations}\PY{p}{:}
+      \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{n}{state}
+      \PY{n}{state} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{)}
+      \PY{n}{stateTrack}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{state}\PY{p}{)}\PY{p}{)}
+      \PY{n}{i} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}
+      \PY{n}{length}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+      
+      \PY{k}{if} \PY{n+nb}{all}\PY{p}{(}\PY{n}{last\PYZus{}state} \PY{o}{==} \PY{n}{state}\PY{p}{)} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:}
+          \PY{n}{convergence} \PY{o}{=} \PY{k+kc}{True}
+
+  \PY{k}{return} \PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}
+
+\PY{k}{def} \PY{n+nf}{PlotMarkov}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}\PY{p}{)}\PY{p}{:}
+  \PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{state}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+  \PY{n}{dims} \PY{o}{=}\PY{p}{(}\PY{l+m+mf}{10.7}\PY{p}{,} \PY{l+m+mf}{7.27}\PY{p}{)}
+  \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{dims}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Transitions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Amount of Wieght in State}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{splot} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{labels}\PY{p}{)}
+  \PY{n}{sns}\PY{o}{.}\PY{n}{lineplot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{data} \PY{o}{=} \PY{n}{splot}\PY{p}{,} \PY{n}{markers}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}   results = \PYZob{}\PYZsq{}Number of Iterations\PYZsq{}: \PYZsq{}i\PYZsq{},\PYZsq{}Steady State Vector\PYZsq{}: state\PYZcb{}}
+\PY{c+c1}{\PYZsh{}   display(pd.DataFrame(data=results))}
+
+\PY{n}{state} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2000}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{n}{transition} \PY{o}{=} \PY{p}{[}
+        
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.3}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}
+            
+                            \PY{p}{]}
+
+\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state} \PY{o}{=} \PY{n}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{,} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{PlotMarkov}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{125}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{strategy}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} makes cvss scores into probabilities according to [Abraham2014]}
+\PY{l+s+sd}{    add new edge label \PYZsq{}weighted\PYZus{}score\PYZsq{} so return matrix isnt needed here}
+\PY{l+s+sd}{    this can be done in attack graph too (set edge scores)}
+\PY{l+s+sd}{    :param weight: the edge labels to normalize}
+\PY{l+s+sd}{    :return:}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{nodetally} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+    \PY{c+c1}{\PYZsh{} nodetally[\PYZsq{}nodes\PYZsq{}] = \PYZob{}\PYZcb{}}
+    \PY{n}{nodelist} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{g}\PY{p}{)}\PY{p}{)}
+    \PY{n}{NEW\PYZus{}EDGE\PYZus{}LABEL} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}
+
+
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{nodes}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+      \PY{c+c1}{\PYZsh{} only concerned with outbound probs in this weighting method}
+      \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+      \PY{c+c1}{\PYZsh{} pprint.pprint(nodetally)}
+
+      \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{succs\PYZus{}sum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+      \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{succs\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+      \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{preds\PYZus{}sum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+      \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{preds\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+
+      \PY{c+c1}{\PYZsh{} i\PYZus{}edges = [((u, v, k), e) for u, v, k, e in g.in\PYZus{}edges(n, keys=True, data=True)]}
+      \PY{n}{o\PYZus{}edges} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{e}\PY{p}{)} \PY{k}{for} \PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{e} \PY{o+ow}{in} \PY{n}{g}\PY{o}{.}\PY{n}{out\PYZus{}edges}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{keys}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+
+      \PY{k}{for} \PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{e} \PY{o+ow}{in} \PY{n}{o\PYZus{}edges}\PY{p}{:}
+        \PY{k}{if} \PY{n}{weight} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+          \PY{n}{nodetally}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o}{=} \PY{k+kc}{None}
+        \PY{k}{if} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+          \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{succs\PYZus{}sum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]}
+        \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{succs\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+        \PY{n}{denom} \PY{o}{=} \PY{n}{nodetally}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{succs\PYZus{}sum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{k}{for} \PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{v}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{,} \PY{n}{e} \PY{o+ow}{in} \PY{n}{o\PYZus{}edges}\PY{p}{:}
+          \PY{k}{if} \PY{n}{weight} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{nodetally}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o}{=} \PY{k+kc}{None}
+          \PY{k}{if} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=} \PY{n}{g}\PY{p}{[}\PY{n}{u}\PY{p}{]}\PY{p}{[}\PY{n}{v}\PY{p}{]}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{[}\PY{n}{weight}\PY{p}{]} \PY{o}{/} \PY{n}{denom}
+
+    \PY{n}{q} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{nodelist}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{NEW\PYZus{}EDGE\PYZus{}LABEL}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} print(nodelist, q.todense())}
+    \PY{c+c1}{\PYZsh{} return q}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{126}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval} \PY{k+kn}{import} \PY{n}{attack\PYZus{}graph}
+\PY{n}{np}\PY{o}{.}\PY{n}{set\PYZus{}printoptions}\PY{p}{(}\PY{n}{suppress}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{ag} \PY{o}{=} \PY{n}{attack\PYZus{}graph}\PY{o}{.}\PY{n}{AttackGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{load\PYZus{}dot\PYZus{}file}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/data/mulval\PYZus{}ag/small\PYZus{}enterprise/AttackGraph.dot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{small\PYZus{}enterprise}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{ag}\PY{o}{.}\PY{n}{load\PYZus{}score\PYZus{}dict}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/src/py\PYZus{}mulval/data/secmet/scoreDict.yml}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{PLOT\PYZus{}INTERMEDIATE\PYZus{}GRAPHS} \PY{o}{=} \PY{k+kc}{False}
+
+\PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}orig}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{node\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} plot\PYZus{}ag(reduced\PYZus{}ag, \PYZsq{}Reduced Attack Graph is the Markov Transition Matrix\PYZsq{}, )}
+\PY{n}{P\PYZus{}orig} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{P\PYZus{}normal} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+
+\PY{n}{ag}\PY{o}{.}\PY{n}{map\PYZus{}scores} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cvss2time}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{P\PYZus{}mapped} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{P\PYZus{}mapped\PYZus{}normed} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+
+
+\PY{n}{Q} \PY{o}{=} \PY{n}{P\PYZus{}mapped}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} print(\PYZsq{}CVSS weighted:\PYZbs{}n\PYZsq{}, P\PYZus{}orig.todense())}
+
+\PY{c+c1}{\PYZsh{} print(\PYZsq{}CVSS weighted normalized:\PYZbs{}n\PYZsq{}, P\PYZus{}normal.todense())}
+\PY{n+nb}{print}\PY{p}{(} \PY{n}{node\PYZus{}list}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZlt{}\PYZhy{}node ID}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CVSS mappped to arrival rates:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{P\PYZus{}mapped}\PY{o}{.}\PY{n}{todense}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} print(\PYZsq{}CVSS mappped to arrival rates normalized:\PYZbs{}n\PYZsq{},P\PYZus{}mapped\PYZus{}normed.todense())}
+
+\PY{c+c1}{\PYZsh{} print(\PYZsq{}Q:\PYZbs{}n\PYZsq{}, Q.todense())}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['0', '13', '8', '5', '3', '1'] <-node ID
+
+CVSS mappped to arrival rates:
+ [[   0.      1.      0.      0.      0.      0.  ]
+ [   0.      0.      1.      0.2     0.      0.  ]
+ [   0.      0.      0.   5000.      0.      0.  ]
+ [   0.      0.      0.      0.      0.02    0.  ]
+ [   0.      0.      0.      0.      0.      5.  ]
+ [   0.      0.      0.      0.      0.      0.  ]]
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{133}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} arrival\PYZus{}rates = [.0002, .02, 1, 5, 50]}
+\PY{c+c1}{\PYZsh{} samples\PYZus{}expon = sample\PYZus{}from\PYZus{}dist(dist=\PYZsq{}exp\PYZsq{}, rate=50)}
+\PY{c+c1}{\PYZsh{} plt.hist(samples\PYZus{}expon, bins=100)}
+\PY{c+c1}{\PYZsh{} print(len(samples\PYZus{}expon))}
+\PY{c+c1}{\PYZsh{} df = pd.DataFrame(samples\PYZus{}expon)}
+\PY{c+c1}{\PYZsh{} print(df.describe())}
+\PY{c+c1}{\PYZsh{} st.expon.shape}
+
+\PY{n}{rows}\PY{p}{,} \PY{n}{cols} \PY{o}{=} \PY{n}{P\PYZus{}mapped}\PY{o}{.}\PY{n}{shape}
+
+
+\PY{n}{max\PYZus{}steps} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{state\PYZus{}at\PYZus{}step} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{max\PYZus{}steps}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} states[0] correspond to nodes in the attack graph}
+\PY{n}{states} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{node\PYZus{}list}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} x[t]}
+\PY{n}{states}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{max\PYZus{}steps}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{states}\PY{p}{)}\PY{p}{,} \PY{n}{states}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} N = 100  \PYZsh{} maximum population size}
+\PY{c+c1}{\PYZsh{} advance = .5 / N  \PYZsh{} birth rate}
+\PY{c+c1}{\PYZsh{} b = .5 / N  \PYZsh{} death rate}
+
+\PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{max\PYZus{}steps} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{time:}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ attacker state: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ current\PYZus{}nodeID: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{state\PYZus{}at\PYZus{}step}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{,} \PY{n}{state\PYZus{}at\PYZus{}step}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+  \PY{k}{if} \PY{n}{state\PYZus{}at\PYZus{}step}\PY{p}{[}\PY{n}{t}\PY{p}{]} \PY{o}{!=} \PY{n}{states}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{states}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}     Does the attacker advance?}
+    
+      
+      \PY{n}{advance} \PY{o}{=} \PY{n}{sample\PYZus{}from\PYZus{}dist}\PY{p}{(}\PY{n}{dist}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rate}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)} 
+      \PY{n+nb}{print}\PY{p}{(}\PY{n}{advance}\PY{p}{)}
+    
+\PY{c+c1}{\PYZsh{}         \PYZlt{}= a * x[t]}
+      \PY{c+c1}{\PYZsh{} Is there a death?}
+\PY{c+c1}{\PYZsh{}       death = np.random.rand() \PYZlt{}= b * x[t]}
+      \PY{c+c1}{\PYZsh{} We update the population size.}
+\PY{c+c1}{\PYZsh{}       x[t + 1] = x[t] + 1 * birth \PYZhy{} 1 * death}
+  \PY{c+c1}{\PYZsh{} The evolution stops if we reach \PYZdl{}0\PYZdl{} or \PYZdl{}N\PYZdl{}.}
+\PY{c+c1}{\PYZsh{}   else:}
+\PY{c+c1}{\PYZsh{}       x[t + 1] = x[t]}
+\PY{c+c1}{\PYZsh{} print(x)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'numpy.ndarray'> [50.  0.  0.  0.  0.  0.]
+time:0 attacker state: 0 current\_nodeID: 0
+time:1 attacker state: 0 current\_nodeID: 0
+time:2 attacker state: 0 current\_nodeID: 0
+time:3 attacker state: 0 current\_nodeID: 0
+time:4 attacker state: 0 current\_nodeID: 0
+time:5 attacker state: 0 current\_nodeID: 0
+time:6 attacker state: 0 current\_nodeID: 0
+time:7 attacker state: 0 current\_nodeID: 0
+time:8 attacker state: 0 current\_nodeID: 0
+time:9 attacker state: 0 current\_nodeID: 0
+time:10 attacker state: 0 current\_nodeID: 0
+time:11 attacker state: 0 current\_nodeID: 0
+time:12 attacker state: 0 current\_nodeID: 0
+time:13 attacker state: 0 current\_nodeID: 0
+time:14 attacker state: 0 current\_nodeID: 0
+time:15 attacker state: 0 current\_nodeID: 0
+time:16 attacker state: 0 current\_nodeID: 0
+time:17 attacker state: 0 current\_nodeID: 0
+time:18 attacker state: 0 current\_nodeID: 0
+time:19 attacker state: 0 current\_nodeID: 0
+time:20 attacker state: 0 current\_nodeID: 0
+time:21 attacker state: 0 current\_nodeID: 0
+time:22 attacker state: 0 current\_nodeID: 0
+time:23 attacker state: 0 current\_nodeID: 0
+time:24 attacker state: 0 current\_nodeID: 0
+time:25 attacker state: 0 current\_nodeID: 0
+time:26 attacker state: 0 current\_nodeID: 0
+time:27 attacker state: 0 current\_nodeID: 0
+time:28 attacker state: 0 current\_nodeID: 0
+time:29 attacker state: 0 current\_nodeID: 0
+time:30 attacker state: 0 current\_nodeID: 0
+time:31 attacker state: 0 current\_nodeID: 0
+time:32 attacker state: 0 current\_nodeID: 0
+time:33 attacker state: 0 current\_nodeID: 0
+time:34 attacker state: 0 current\_nodeID: 0
+time:35 attacker state: 0 current\_nodeID: 0
+time:36 attacker state: 0 current\_nodeID: 0
+time:37 attacker state: 0 current\_nodeID: 0
+time:38 attacker state: 0 current\_nodeID: 0
+time:39 attacker state: 0 current\_nodeID: 0
+time:40 attacker state: 0 current\_nodeID: 0
+time:41 attacker state: 0 current\_nodeID: 0
+time:42 attacker state: 0 current\_nodeID: 0
+time:43 attacker state: 0 current\_nodeID: 0
+time:44 attacker state: 0 current\_nodeID: 0
+time:45 attacker state: 0 current\_nodeID: 0
+time:46 attacker state: 0 current\_nodeID: 0
+time:47 attacker state: 0 current\_nodeID: 0
+time:48 attacker state: 0 current\_nodeID: 0
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{133}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[<matplotlib.lines.Line2D at 0x7f5200097588>]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{175}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{n\PYZus{}steps} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{starting\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{current\PYZus{}state} \PY{o}{=} \PY{n}{starting\PYZus{}state}
+
+\PY{n}{state\PYZus{}sequence} \PY{o}{=} \PY{p}{[}\PY{n}{current\PYZus{}state}\PY{p}{]}
+\PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}steps}\PY{p}{)}\PY{p}{:}
+    \PY{n}{current\PYZus{}state} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{state\PYZus{}space}\PY{p}{,} \PY{n}{p}\PY{o}{=}\PY{n}{transition\PYZus{}matrix}\PY{p}{[}\PY{n}{current\PYZus{}state}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+    \PY{n}{state\PYZus{}sequence}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{current\PYZus{}state}\PY{p}{)}
+    
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{30}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{n\PYZus{}steps} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{state\PYZus{}sequence}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{yticks}\PY{p}{(}\PY{n}{state\PYZus{}space}\PY{p}{,} \PY{n}{state\PYZus{}space\PYZus{}names}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-175-d40c6ef33a86> in <module>
+          5 state\_sequence = [current\_state]
+          6 for \_ in range(n\_steps):
+    ----> 7     current\_state = np.random.choice(state\_space, p=transition\_matrix[current\_state, :])
+          8     state\_sequence.append(current\_state)
+          9 
+
+
+        NameError: name 'state\_space' is not defined
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}\PY{p}{:}
+  \PY{n}{stateHistory} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{stateTrack} \PY{o}{=} \PY{p}{[}\PY{n}{state}\PY{p}{]}
+  \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+  \PY{n}{length} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{n}{convergence} \PY{o}{=} \PY{k+kc}{False}
+
+  \PY{k}{while} \PY{n}{convergence} \PY{o}{==} \PY{k+kc}{False} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{iterations}\PY{p}{:}
+      \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{n}{state}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{state: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ at time }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{p}{[}  \PY{n+nb}{round}\PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{state}\PY{p}{]}\PY{p}{,}  \PY{n}{t}\PY{p}{)}\PY{p}{)}
+      \PY{n}{state} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{)}
+      \PY{n}{stateTrack}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{state}\PY{p}{)}\PY{p}{)}
+      \PY{n}{i} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}
+      \PY{n}{length}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+      
+\PY{c+c1}{\PYZsh{}       if all(last\PYZus{}state == state) == True:}
+\PY{c+c1}{\PYZsh{}           convergence = True}
+
+  \PY{k}{return} \PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}
+
+\PY{k}{def} \PY{n+nf}{PlotMarkov}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}\PY{p}{)}\PY{p}{:}
+  \PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{State }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{i} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{state}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+  \PY{n}{dims} \PY{o}{=}\PY{p}{(}\PY{l+m+mf}{10.7}\PY{p}{,} \PY{l+m+mf}{7.27}\PY{p}{)}
+  \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{dims}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Transitions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Amount of Wieght in State}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{splot} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{labels}\PY{p}{)}
+  \PY{n}{sns}\PY{o}{.}\PY{n}{lineplot}\PY{p}{(}\PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{data} \PY{o}{=} \PY{n}{splot}\PY{p}{,} \PY{n}{markers}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}   results = \PYZob{}\PYZsq{}Number of Iterations\PYZsq{}: \PYZsq{}i\PYZsq{},\PYZsq{}Steady State Vector\PYZsq{}: state\PYZcb{}}
+\PY{c+c1}{\PYZsh{}   display(pd.DataFrame(data=results))}
+
+\PY{n}{state} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2000}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{n}{transition} \PY{o}{=} \PY{p}{[}
+        
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{,} \PY{l+m+mf}{0.2}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.3}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.4}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}
+            
+                            \PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{transition}\PY{p}{)}\PY{p}{)}
+\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state} \PY{o}{=} \PY{n}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{,} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{PlotMarkov}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'list'>
+state: [2000, 0, 0, 0, 0, 0] at time 0
+state: [0.0, 1000.0, 1000.0, 0.0, 0.0, 0.0] at time 0
+state: [0.0, 200.0, 600.0, 600.0, 400.0, 200.0] at time 0
+state: [120.0, 100.0, 280.0, 300.0, 640.0, 560.0] at time 0
+state: [60.0, 110.0, 192.0, 150.0, 752.0, 736.0] at time 0
+state: [30.0, 67.0, 128.8, 111.0, 828.8, 834.4] at time 0
+state: [22.2, 39.5, 79.92, 73.5, 880.32, 904.56] at time 0
+state: [14.7, 26.35, 50.97, 45.75, 912.29, 949.94] at time 0
+state: [9.15, 17.2, 33.01, 29.54, 932.68, 978.44] at time 0
+state: [5.91, 10.97, 21.22, 19.18, 945.88, 996.85] at time 0
+state: [3.84, 7.06, 13.63, 12.33, 954.36, 1008.77] at time 0
+state: [2.47, 4.56, 8.78, 7.94, 959.82, 1016.43] at time 0
+state: [1.59, 2.94, 5.66, 5.12, 963.33, 1021.36] at time 0
+state: [1.02, 1.89, 3.65, 3.3, 965.6, 1024.54] at time 0
+state: [0.66, 1.22, 2.35, 2.13, 967.05, 1026.59] at time 0
+state: [0.43, 0.79, 1.51, 1.37, 967.99, 1027.91] at time 0
+state: [0.27, 0.51, 0.98, 0.88, 968.6, 1028.76] at time 0
+state: [0.18, 0.33, 0.63, 0.57, 968.99, 1029.31] at time 0
+state: [0.11, 0.21, 0.41, 0.37, 969.24, 1029.66] at time 0
+state: [0.07, 0.14, 0.26, 0.24, 969.4, 1029.89] at time 0
+state: [0.05, 0.09, 0.17, 0.15, 969.51, 1030.04] at time 0
+state: [0.03, 0.06, 0.11, 0.1, 969.57, 1030.13] at time 0
+state: [0.02, 0.04, 0.07, 0.06, 969.62, 1030.19] at time 0
+state: [0.01, 0.02, 0.05, 0.04, 969.65, 1030.23] at time 0
+state: [0.01, 0.02, 0.03, 0.03, 969.66, 1030.26] at time 0
+state: [0.01, 0.01, 0.02, 0.02, 969.68, 1030.27] at time 0
+state: [0.0, 0.01, 0.01, 0.01, 969.68, 1030.28] at time 0
+state: [0.0, 0.0, 0.01, 0.01, 969.69, 1030.29] at time 0
+state: [0.0, 0.0, 0.01, 0.0, 969.69, 1030.3] at time 0
+state: [0.0, 0.0, 0.0, 0.0, 969.69, 1030.3] at time 0
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{119}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{scipy}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k+kn}{import} \PY{o}{*}
+
+\PY{k}{def} \PY{n+nf}{compute\PYZus{}Q\PYZus{}d}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{q0}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} a: no of arrivals in a period}
+    \PY{c+c1}{\PYZsh{} s: no of services at start of a period}
+    \PY{n}{d} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}  \PY{c+c1}{\PYZsh{} departures}
+    \PY{n}{Q} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{a}\PY{p}{)}  \PY{c+c1}{\PYZsh{} queue lengths}
+    \PY{n}{Q}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{q0}  \PY{c+c1}{\PYZsh{} starting level of the queue}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{d}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{Q}\PY{p}{[}\PY{n}{i} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+        \PY{n}{Q}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{Q}\PY{p}{[}\PY{n}{i} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{n}{a}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{d}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+
+    \PY{k}{return} \PY{n}{Q}\PY{p}{,} \PY{n}{d}
+
+\PY{k}{def} \PY{n+nf}{cdf}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{p}{:}
+    \PY{n}{y} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{n}{yy} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{k}{for} \PY{n}{yy} \PY{o+ow}{in} \PY{n}{y}\PY{p}{]}  \PY{c+c1}{\PYZsh{} normalize}
+    \PY{n}{x} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}\PY{p}{,} \PY{n}{y}
+
+\PY{k}{def} \PY{n+nf}{KS}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{F}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{}Equality test that can be used to compare a sample with a reference probability distribution (one\PYZhy{}sample K–S test), or to compare two samples (two\PYZhy{}sample K–S test)}
+    \PY{c+c1}{\PYZsh{} Compute the Kolmogorov\PYZhy{}Smirnov statistic where}
+    \PY{c+c1}{\PYZsh{} X are the data points}
+    \PY{c+c1}{\PYZsh{} F is the theoretical distribution}
+    \PY{n}{support}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{cdf}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+    \PY{n}{y\PYZus{}theo} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{F}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{support}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{y} \PY{o}{\PYZhy{}} \PY{n}{y\PYZus{}theo}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{122}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}distributions}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{N}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{dist}\PY{p}{,} \PY{n}{dist\PYZus{}name}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} plot the empirical cdf and the theoretical cdf in one figure}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{X \PYZti{} }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ with N = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{, L = }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{dist\PYZus{}name}\PY{p}{,} \PY{n}{N}\PY{p}{,} \PY{n}{L}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{empirical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{dist}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{exponential}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+    
+\PY{k}{def} \PY{n+nf}{simulation\PYZus{}4}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{N} \PY{o}{=} \PY{l+m+mi}{1}  \PY{c+c1}{\PYZsh{} number of customers}
+    \PY{n}{L} \PY{o}{=} \PY{l+m+mi}{300}
+
+    \PY{n}{labda} \PY{o}{=} \PY{l+m+mf}{1.0} \PY{o}{/} \PY{l+m+mi}{5}  \PY{c+c1}{\PYZsh{} lambda is a function in python. Hence we write labda}
+    \PY{n}{E} \PY{o}{=} \PY{n}{expon}\PY{p}{(}\PY{n}{scale}\PY{o}{=}\PY{l+m+mf}{50.0} \PY{o}{/} \PY{n}{labda}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{E}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} to check that we chose the right scale}
+    \PY{n}{a} \PY{o}{=} \PY{n}{E}\PY{o}{.}\PY{n}{rvs}\PY{p}{(}\PY{n}{L}\PY{p}{)}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{KS}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{n}{E}\PY{p}{)}\PY{p}{)}
+    \PY{n}{x}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{cdf}\PY{p}{(}\PY{n}{a}\PY{p}{)}
+    \PY{n}{dist\PYZus{}name} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{U[4,6]}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{n}{plot\PYZus{}distributions}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{N}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{E}\PY{p}{,} \PY{n}{dist\PYZus{}name}\PY{p}{)}
+
+\PY{n}{simulation\PYZus{}4}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+250.0
+0.07401771863414919
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{123}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{AGMarkov}\PY{p}{(}\PY{n}{ag}\PY{p}{)}\PY{p}{:}
+\PY{c+c1}{\PYZsh{}   np.set\PYZus{}printoptions(suppress=True)}
+\PY{c+c1}{\PYZsh{}   ag = attack\PYZus{}graph.AttackGraph()}
+\PY{c+c1}{\PYZsh{}   ag.load\PYZus{}dot\PYZus{}file(\PYZsq{}/opt/projects/diss/py\PYZhy{}mulval/data/mulval\PYZus{}ag/small\PYZus{}enterprise/AttackGraph.dot\PYZsq{})}
+\PY{c+c1}{\PYZsh{}   ag.name = \PYZsq{}small\PYZus{}enterprise\PYZsq{}}
+\PY{c+c1}{\PYZsh{}   ag.load\PYZus{}score\PYZus{}dict(\PYZsq{}/opt/projects/diss/py\PYZhy{}mulval/src/py\PYZus{}mulval/data/secmet/scoreDict.yml\PYZsq{})}
+\PY{c+c1}{\PYZsh{}   ag.PLOT\PYZus{}INTERMEDIATE\PYZus{}GRAPHS = False}
+\PY{c+c1}{\PYZsh{}   ag.map\PYZus{}scores = \PYZsq{}cvss2time\PYZsq{}}
+
+  \PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+  \PY{n}{node\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{)}\PY{p}{)}
+
+  \PY{c+c1}{\PYZsh{} reduced\PYZus{}ag = ag.getReducedGraph()}
+  \PY{n}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{node\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{)}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{node\PYZus{}list}\PY{p}{)}
+  \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{0}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{node\PYZus{}list}\PY{p}{:}
+    \PY{n}{node\PYZus{}list}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{n}{node\PYZus{}list}\PY{p}{)}
+  \PY{n}{P\PYZus{}orig} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}orig}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{P\PYZus{}normal} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+  \PY{n}{ag}\PY{o}{.}\PY{n}{map\PYZus{}scores} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cvss2time}\PY{l+s+s1}{\PYZsq{}}
+  \PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+  \PY{n}{P\PYZus{}mapped} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+  \PY{c+c1}{\PYZsh{} print(\PYZsq{}CVSS weighted:\PYZbs{}n\PYZsq{}, P\PYZus{}orig.todense())}
+  \PY{n}{tmatrix} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{P\PYZus{}normal}\PY{o}{.}\PY{n}{todense}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}   print(\PYZsq{}CVSS weighted normalized \PYZob{}\PYZcb{}:\PYZbs{}n\PYZob{}\PYZcb{}\PYZsq{}.format(type(tmatrix), tmatrix))}
+\PY{c+c1}{\PYZsh{}   for row in tmatrix:}
+\PY{c+c1}{\PYZsh{}         print(type(row), row)}
+  \PY{c+c1}{\PYZsh{} print(node\PYZus{}list, \PYZsq{}\PYZlt{}\PYZhy{}node IDs\PYZbs{}n\PYZsq{})}
+  \PY{c+c1}{\PYZsh{} print(\PYZsq{}CVSS mappped to arrival rates:\PYZbs{}n\PYZsq{}, P\PYZus{}mapped.todense())}
+
+
+  \PY{n}{steps} \PY{o}{=} \PY{l+m+mi}{2000}
+  \PY{n}{state} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{node\PYZus{}list}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+  \PY{n}{state}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{2000}
+\PY{c+c1}{\PYZsh{}   print(state)}
+
+\PY{c+c1}{\PYZsh{}   return(MarkovChain(state, P\PYZus{}normal, 30))}
+  \PY{k}{return}\PY{p}{(}\PY{n}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{tmatrix}\PY{p}{,} \PY{l+m+mi}{30}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{MarkovChain}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}\PY{p}{:}
+  \PY{n}{stateHistory} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{stateTrack} \PY{o}{=} \PY{p}{[}\PY{n}{state}\PY{p}{]}
+  \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+  \PY{n}{length} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{n}{convergence} \PY{o}{=} \PY{k+kc}{False}
+
+  \PY{k}{while} \PY{n}{convergence} \PY{o}{==} \PY{k+kc}{False} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{iterations}\PY{p}{:}
+      \PY{n}{last\PYZus{}state} \PY{o}{=} \PY{n}{state}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{state: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ at time }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{p}{[}  \PY{n+nb}{round}\PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{state}\PY{p}{]}\PY{p}{,}  \PY{n}{t}\PY{p}{)}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dot}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}  \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{)}\PY{p}{)}
+      \PY{n}{state} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{state}\PY{p}{,} \PY{n}{transition}\PY{p}{)}
+      \PY{n}{stateTrack}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{state}\PY{p}{)}\PY{p}{)}
+      \PY{n}{i} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}
+      \PY{n}{length}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+      
+\PY{c+c1}{\PYZsh{}       if all(last\PYZus{}state == state) == True:}
+\PY{c+c1}{\PYZsh{}           convergence = True}
+
+  \PY{k}{return} \PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}
+
+\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state} \PY{o}{=} \PY{n}{AGMarkov}\PY{p}{(}\PY{n}{ag}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{state}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} df = pd.DataFrame(stateTrack)}
+\PY{c+c1}{\PYZsh{} df.head()}
+\PY{l+m+mi}{0}\PY{c+c1}{\PYZsh{} PlotMarkov(stateTrack, length, state)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['0', '13', '8', '5', '3', '1']
+['13', '8', '5', '3', '1']
+state: [2000, 0, 0, 0, 0] at time <scipy.stats.\_continuous\_distns.t\_gen object
+at 0x7f51c8c69b00>
+dot
+ [   0.         1666.66666667  333.33333333    0.            0.        ]
+state: [0.0, 1666.67, 333.33, 0.0, 0.0] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.         1666.66666667  333.33333333    0.        ]
+state: [0.0, 0.0, 1666.67, 333.33, 0.0] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.            0.         1666.66666667  333.33333333]
+state: [0.0, 0.0, 0.0, 1666.67, 333.33] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.            0.            0.         1666.66666667]
+state: [0.0, 0.0, 0.0, 0.0, 1666.67] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+[0. 0. 0. 0. 0.]
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{123}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{124}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval} \PY{k+kn}{import} \PY{n}{attack\PYZus{}graph}
+\PY{n}{ag} \PY{o}{=} \PY{n}{attack\PYZus{}graph}\PY{o}{.}\PY{n}{AttackGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{load\PYZus{}dot\PYZus{}file}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/data/mulval\PYZus{}ag/small\PYZus{}enterprise/AttackGraph.dot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{name} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{small\PYZus{}enterprise}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{ag}\PY{o}{.}\PY{n}{load\PYZus{}score\PYZus{}dict}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/src/py\PYZus{}mulval/data/secmet/scoreDict.yml}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ag}\PY{o}{.}\PY{n}{PLOT\PYZus{}INTERMEDIATE\PYZus{}GRAPHS} \PY{o}{=} \PY{k+kc}{False}
+
+\PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}orig}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{node\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} plot\PYZus{}ag(reduced\PYZus{}ag, \PYZsq{}Reduced Attack Graph is the Markov Transition Matrix\PYZsq{}, )}
+\PY{n}{P\PYZus{}orig} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{P\PYZus{}normal} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+
+\PY{n}{ag}\PY{o}{.}\PY{n}{map\PYZus{}scores} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cvss2time}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{reduced\PYZus{}ag} \PY{o}{=} \PY{n}{ag}\PY{o}{.}\PY{n}{getReducedGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{P\PYZus{}mapped} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+\PY{n}{normalize\PYZus{}scores\PYZus{}graph1}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{P\PYZus{}mapped\PYZus{}normed} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{adjacency\PYZus{}matrix}\PY{p}{(}\PY{n}{reduced\PYZus{}ag}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{node\PYZus{}list}\PY{p}{,}  \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted\PYZus{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} 
+
+\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state} \PY{o}{=} \PY{n}{AGMarkov}\PY{p}{(}\PY{n}{ag}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(AGMarkov(ag))}
+\PY{n}{PlotMarkov}\PY{p}{(}\PY{n}{stateTrack}\PY{p}{,} \PY{n}{length}\PY{p}{,} \PY{n}{state}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['0', '13', '8', '5', '3', '1']
+['13', '8', '5', '3', '1']
+state: [2000, 0, 0, 0, 0] at time <scipy.stats.\_continuous\_distns.t\_gen object
+at 0x7f51c8c69b00>
+dot
+ [   0.         1666.66666667  333.33333333    0.            0.        ]
+state: [0.0, 1666.67, 333.33, 0.0, 0.0] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.         1666.66666667  333.33333333    0.        ]
+state: [0.0, 0.0, 1666.67, 333.33, 0.0] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.            0.         1666.66666667  333.33333333]
+state: [0.0, 0.0, 0.0, 1666.67, 333.33] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [   0.            0.            0.            0.         1666.66666667]
+state: [0.0, 0.0, 0.0, 0.0, 1666.67] at time
+<scipy.stats.\_continuous\_distns.t\_gen object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+state: [0.0, 0.0, 0.0, 0.0, 0.0] at time <scipy.stats.\_continuous\_distns.t\_gen
+object at 0x7f51c8c69b00>
+dot
+ [0. 0. 0. 0. 0.]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Another Section}\label{another-section}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{subsection}\label{subsection}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Conclusion}\label{conclusion}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

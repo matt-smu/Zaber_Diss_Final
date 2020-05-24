@@ -1,0 +1,44 @@
+
+
+% NIST 800-55\cite{Swanson_Bartol_Sabato_Hash_Graffo_2003} describes security metrics as "\textit{tools designed to facilitate decision making and improve performance and accountability through collection, analysis, and reporting of relevant performance-related data. IT security metrics must be based on IT security performance goals and objectives.}"
+
+When system performance is described, it tends to be in quantifiable terms. The metrics chosen are well understood characteristics like network latency and disk IOPS, the measurement tools are capable of sampling the desired metrics repeatably, and the results are reported with consistency. Benchmarks can be used to compare competing alternatives against a desired metric, to evaluate the effect of changes made to an existing system, or to confirm that expected service level agreements are met. It's easy to draw a line between system performance and return on investment.
+
+In contrast, system security discussions can be somewhat less intuitive. Common measures include compliance level, patch cycle frequency, or the number and severity of vulnerability scan findings. The CVSS\cite{Mell07thecommon} framework provides a method to score software vulnerabilities on metrics like impact or complexity, along with knobs to tune the base score according to temporal or environmental factors. Scored vulnerabilities offer a ranking method for remediation priority, but don't give insight into the system's overall security posture since each vulnerability is scored in isolation. 
+
+Each vulnerability requires a set of preconditions to exist in order to perform an exploit successfully; if an unpatched service is running but an attacker can't connect to the listening port due to firewall rules, then the vulnerability is not reachable. When a vulnerability is exploited successfully, the resulting postconditions (escalated privileges for example) are applied to the attacker and environment, potentially opening the way to previously unreachable vulnerabilities. A common representation of the reachability between vulnerabilities in a system is a directed graph, where an edge exists between two nodes when all preconditions needed to compromise the successor are met by the predecessor. By assigning an attacker an initial set of preconditions and a set of target postconditions as the goal, then a sequence of nodes with edges connecting the initial position and the target forms an attack path, and the enumeration of all possible attack paths is the attack graph. The attack graph augmented with CVSS scores forms the basis of many of the model based security metrics described in \cite{Pendleton_Garcia-Lebron_Cho_Xu_2016}\cite{Ramos_Lazar_Filho_Rodrigues_2017}\cite{Verendel_2009} which we briefly review in Section \ref{sec:background:metrics}.
+
+There are numerous security metrics published, but what we have encountered in practice supports Verendel's conclusions in \cite{Verendel_2009} and Pendleton's in \cite{Pendleton_Garcia-Lebron_Cho_Xu_2016} - that there is a lack of validation for many of the quantitative methods described in the literature. Attack graph based security metrics tend to be studied in isolation, with the result produced being a mathematical derivation demonstrating analytical soundness, possibly accompanied by a simple use-case to illustrate applicability. What is missing from these studies is a standard methodology and data set to verify security performance against.
+
+% \begin{definition}
+% \textbf{Metric}: The definition of a specific standard unit of measurement.
+% \end{definition}
+% \begin{definition}
+% \textbf{Measurement}: A sampled value of a metric.
+% \end{definition}
+% \begin{definition}
+% \textbf{Test}: The instrument and procedure used to obtain a measurement.
+% \end{definition}
+% \begin{definition}
+% \textbf{Benchmark}: The environment and observed measurements for a test.
+% \end{definition}
+
+% Performance Benchmarking 
+What we propose is a framework for measuring the relative performance of model based security metrics. Benchmarks exist for most other aspects of computing; for network, compute, and storage hardware, for machine learning, stream processing, cache serving, code compiling, and even for other areas of security like cryptographic libraries, spam filtering, and intrusion detection systems. Paxson \cite{Paxson_2004} provides generally applicable characteristics of \textit{good} benchmarks: 
+\begin{itemize}
+\item \textit{Precision} is a limitation of the tool's ability to measure beyond a certain level of detail.
+\item \textit{Accuracy} errors are differences between the measurement we took and the actual value of the thing we measured. Paxson's example is tcpdump silently dropping packets, leading to difference between measured packet count and actual packets sent.
+\item \textit{Misconception} errors are differences in what we intended to measure and what we actually measured. Several examples related to incorrect implementation of network tests (packet loss by retrans count, throughput without filling xfer size filling send buffer)
+\item \textit{Calibration} is used to reduce errors in accuracy and misconception - 4 strategies including testing edge cases, consistency checks, synthetic test data, and retest with different methods to validate.
+\item \textit{Metadata} should be associated with each measurement - can limit precision errors and make data re-usable
+\end{itemize}
+
+These properties must be taken into account when designing a measurement instrument for our metric validation framework. Preventing misconceptions about what we are measuring is of particular importance, as the measurement units of many security metrics are not particularly intuitive. 
+
+
+
+% Measurements need units, and they also need context. We can measure the top speed of a specific car model, but we can't say that car is \textit{fast} unless we compare our measurement to other cars. We can say that a car is not fast compared to the speed of light, but there isn't much value in that statement. Similarly, 
+
+
+
+% Security Benchmarking: 

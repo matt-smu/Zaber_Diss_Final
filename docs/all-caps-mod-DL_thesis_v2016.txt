@@ -1,0 +1,19 @@
+% This file holds a modification of the Dedman LaTeX style file
+% DL_thesis_v2016.sty, around line 70; it implements all-capital
+% chapter headings with \MakeUppercase, as recommended on Stackexchange.
+% Happy writing! -- WC
+
+%==============================================================
+% BEGIN Chapter Heading Customization
+%==============================================================
+
+ \def\@makechapterhead#1{{\parindent 0pt
+  \begin{center}
+  %\ifnum \c@secnumdepth >\m@ne \bf \@chapapp{} \thechapter \\ % TCM use this line to bold Chapter and Chapter Name
+\ifnum \c@secnumdepth >\m@ne \MakeUppercase{\@chapapp{}} \thechapter \\ % WC - edits the one below to make chapter uppercase
+%\ifnum \c@secnumdepth >\m@ne  \@chapapp{} \thechapter \\ % TCM use this line to NOT bold Chapter and Chapter Name
+  \vskip 2pt \fi    % TCM Increase space between chapter and chapter name
+%     \bf          %% Julie Use to boldface chapter name only
+     #1
+  \end{center}
+  \nobreak } }

@@ -1,0 +1,173 @@
+
+Modeling a system's vulnerabilities and the reachability between those vulnerabilities can be found in the literature as far back as 1994 with Dacier\cite{Dacier_1994} formalising the concept of privilege graphs and representing the translated graph as a Markov Model. Phillips and Swiler\cite{Phillips_Swiler_1998} present a separate attack graph generation method that can account for multi-stage attacks and attacker capabilities in 1998. In 1999 Ortalo\cite{Ortalo_1999}  provides experimental results and some fundamental metrics using Markov analysis with Dacier's privilege graphs, and in 2002 Sheyner\cite{Sheyner_Haines_Jha_Lippmann_Wing_2002} describes how attack graph construction and analysis can be automated. In 2006 Ou\cite{Ou_Boyer_McQueen_2006} provides an analysis of scalability extensions to the MulVal\cite{Ou_Govindavajhala_Appel} attack graph engine presented the previous year, and in 2013 Hong\cite{Hong_Kim_Takaoka_2013} presents further scalability improvements to MulVal using logic reduction techniques. In 2015 Abraham\cite{Abraham_Nair_2015b} introduces the Cyber Security Analytics Framework(CSAF) which we adopt for this analysis. More thorough surveys of the canonical attack graph literature can be found in \cite{Kordy_2013} and \cite{Lippmann_Ingols_2005}. We use the remainder of this section to illustrate the MulVal inputs and outputs as expected by the CSAF. 
+
+Attack graphs show the relationships among vulnerabilities within a system and provide context to security scans already conducted by many organisations. An attack graph is a directed graph that captures all possible paths an attacker can traverse within a system to reach a desired target state. The first node in the graph represents the origin of the attack and the final node denotes the target. The origin contains only outbound edges and the target contains only inbound edges. Nodes in the graph between the origin and target represent discrete states in states network. Each edge in the graph identifies a possible pivot from one state to another through either unaltered access mechanisms or successful exploitation of a vulnerability. The conditions necessary for successful compromise of the vulnerability are encapsulated in the attack graph vertices, and include information such as network, port, protocol, and access privilege level restrictions, as well as the effect of a successful exploit on the system such as privilege escalation or remote code execution. These conditions can be populated from the output of IA and network management systems, or in hypothetical cases, can be defined manually.  
+
+%Our research extends the insight provided by an attack graph to draw conclusions about the security of a network through analyzing these vulnerability relationships and simulating an attacker’s progression through the network to a given target.   
+
+% \begin{figure}[H]
+% \centering
+% \begin{adjustbox}{minipage=\linewidth,scale=0.6}
+% \begin{subfigure}{.5\textwidth}
+% \includegraphics[width=\linewidth]{img/eg_net.png}
+% \caption{example network}
+% \label{fig:eg_net}
+% \end{subfigure}%
+% \begin{subfigure}{.5\textwidth}
+% %%\includegraphics[width=\linewidth]{img/1553187466080.png}
+% \includegraphics[width=\linewidth]{content/figs/eg_attack_graph_002a.png}
+% \caption{resulting attack graph}
+% \label{fig:eg_ag}
+% \end{subfigure}%
+% \caption{Attack Graph Example}
+% \label{fig:eg}
+% \end{adjustbox}
+% \end{figure} 
+
+% For example, Figure \ref{fig:eg_net} shows a fictional system being targeted by an attacker and Figure \ref{fig:eg_ag} shows the derived attack graph. While there exist 4 vulnerabilities between the attacker and the target, only vulnerability v1 is exploitable from the attacker’s original context. If this vulnerability is successfully exploited, the attacker can subsequently exploit vulnerabilities v2 or v3 on System 2 or proceed directly to the Target by exploiting v4. Note in Figure \ref{fig:eg_ag} that nodes S2.1 and S2.2 are separate vulnerabilities on the same system (System 2); nodes in an attack graph don’t necessarily have a one-to-one mapping to system elements. Also notice that there are three possible attack paths available for the attacker to reach the target.  
+
+
+% The next step is to take the generated attack graph and augment transition probabilities based on an established or approximated CVSS score.  For example, we may choose exploitability, the measure of how easily a vulnerability is leveraged by an attacker, or impact, the measure of how critical an exploit would be to operations, to base the likelihood of an attack path being taken. Due to the large and complex graphs that can be generated for even simple networks, we automate the process of translating the attack graph output into a form that can be consumed by subsequent phases through a data transform pipeline to include graph node reduction, CVSS score lookup and assignment, and transition probability calculations.
+
+The example in Figure \ref{fig:eg_net01} assumes an attacker located on the public internet with the target being root access on the internal workstation. The network model provided to MulVal is shown in Listing \ref{lst:input}. The $hacl/4$ clauses define access control rules that depict router and firewall configurations and dictate reachability between states. The host configuration properties include what services are running, the user or privilege level that service is running as, and any vulnerabilities known to affect that service.
+
+\begin{figure}[ht]
+\begin{tabular}{p{0.38\textwidth}p{0.57\textwidth}}
+\begin{minipage}{.38\textwidth}
+\centering
+\includegraphics[scale=.4]{content/figs/egarch_01.png}
+\caption{Example network}
+\label{fig:eg_net01}
+%\end{figure} 
+\end{minipage}
+&
+\begin{minipage}{.57\textwidth}
+% \begin{adjustbox}{width=\textwidth}
+\begin{lstlisting}[style=datalog, label={lst:input}, caption={input.P \cite{Ou_Boyer_McQueen_2006}}]
+attackerLocated(internet).
+attackGoal(execCode(workStation,_)).
+hacl(internet, webServer, tcp, 80).
+hacl(webServer, _,  _, _).
+hacl(fileServer, _, _, _).
+hacl(workStation, _, _, _).
+hacl(H,H,_,_).
+/* configuration information of fileServer */
+networkServiceInfo(fileServer, mountd, rpc, 100005, root).
+nfsExportInfo(fileServer, '/export', _anyAccess, workStation).
+nfsExportInfo(fileServer, '/export', _anyAccess, webServer).
+vulExists(fileServer, vulID, mountd).
+vulProperty(vulID, remoteExploit, privEscalation).
+localFileProtection(fileServer, root, _, _).
+/* configuration information of webServer */
+vulExists(webServer, 'CAN-2002-0392', httpd).
+vulProperty('CAN-2002-0392', remoteExploit, privEscalation).
+networkServiceInfo(webServer , httpd, tcp , 80 , apache).
+/* configuration information of workStation */
+nfsMounted(workStation, '/usr/local/share', 
+   fileServer, '/export', read).
+\end{lstlisting}
+% \end{adjustbox}
+\end{minipage}
+\end{tabular}
+\end{figure}
+
+ The visual representation of the resulting attack graph can be found in Figure \ref{fig:tg_001}. A MulVal attack graph contains three types of nodes: \textbf{AND}, \textbf{OR}, and \textbf{LEAF}. \textit{LEAF} nodes (rectangles) describe known facts like configuration information and attacker privilege that are given as inputs to the system model. Internal nodes generally represent potential privileges to be gained by an attacker.  \textit{AND} nodes (ovals) contain interaction rules that dictate which facts and conditions are necessary to derive new knowledge. \textit{OR} nodes (diamonds) represent derived facts such as transition states possible given all incoming conditions are satisfied.
+
+% \begin{figure}[ht]
+% \centering
+% \includegraphics[width=\linewidth]{content/figs/AttackGraph.eps}
+% \caption{Resulting attack graph}
+% \label{fig:eg_ag01}
+% \end{figure} 
+
+ A brief reading of the attack graph generated in Table \ref{tab:mulval_out} and Figure \ref{fig:tg_001} from the top left:
+\setlist{nosep}
+\begin{itemize}
+\item An attacker from the internet (node 18) can access $webServer$ on port 80 (node 15)
+\item Vulnerability CAN-2002-0392 can be exploited (node 20) to allow remote code execution on $webServer$ as user $apache$. From here the attacker can either (node 13):
+\begin{enumerate}
+\item Access $fileServer$ directly over rpc (node 10) and use this to escalate privilege to root (node 22) and write malicious files served to $workstation$ (node 5). 
+\item $OR$ the attacker can write malicious files served to $workstation$ directly using NFS shell (node 23) 
+\end{enumerate}
+\item Given $workstation$ can access the malicious file (node 26) and the malicious file has been created (node 5) then $workstation$ can execute the malicious file with $root$ privileges allowing the attacker to achieve the target. 
+\end{itemize}
+
+\begin{table}[ht]
+    \caption{MulVal gernerated output}
+\begin{subtable}[t]{0.6\textwidth}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}[t]{@{}llll@{}}
+\toprule
+ID & Text & Type & Leaf \\ \midrule
+1 & execCode(workStation,root) & OR & 0 \\ 
+2 & RULE 4 (Trojan horse installation) & AND & 0 \\
+3 & accessFile(workStation,write,'/usr/local/share') & OR & 0 \\
+4 & RULE 16 (NFS semantics) & AND & 0 \\
+5 & accessFile(fileServer,write,'/export') & OR & 0 \\
+6 & RULE 10 (execCode implies file access) & AND & 0 \\
+7 & canAccessFile(fileServer,root,write,'/export') & LEAF & 1 \\
+8 & execCode(fileServer,root) & OR & 0 \\
+9 & RULE 2 (remote exploit of a server program) & AND & 0 \\
+10 & netAccess(fileServer,rpc,100005) & OR & 0 \\
+11 & RULE 5 (multi-hop access) & AND & 0 \\
+12 & hacl(webServer,fileServer,rpc,100005) & LEAF & 1 \\
+13 & execCode(webServer,apache) & OR & 0 \\
+14 & RULE 2 (remote exploit of a server program) & AND & 0 \\
+15 & netAccess(webServer,tcp,80) & OR & 0 \\
+16 & RULE 6 (direct network access) & AND & 0 \\
+17 & hacl(internet,webServer,tcp,80) & LEAF & 1 \\
+18 & attackerLocated(internet) & LEAF & 1 \\
+19 & networkServiceInfo(webServer,httpd,tcp,80,apache) & LEAF & 1 \\
+20 & vulExists(webServer,'CAN-2002-0392',httpd,remoteExploit,privEscalation) & LEAF & 1 \\
+21 & networkServiceInfo(fileServer,mountd,rpc,100005,root) & LEAF & 1 \\
+22 & vulExists(fileServer,vulID,mountd,remoteExploit,privEscalation) & LEAF & 1 \\
+23 & RULE 17 (NFS shell) & AND & 0 \\
+24 & hacl(webServer,fileServer,nfsProtocol,nfsPort) & LEAF & 1 \\
+25 & nfsExportInfo(fileServer,'/export',write,webServer) & LEAF & 1 \\
+26 & nfsMounted(workStation,'/usr/local/share',fileServer,'/export',read) & LEAF & 1 \\ \bottomrule
+\end{tabular}%
+}
+\caption{VERTICES.csv}
+\label{tab:eg_verts}
+\end{subtable}
+\begin{subtable}[t]{0.3\textwidth}
+\flushright
+\resizebox{.68\textwidth}{!}{%
+\begin{tabular}[t]{@{}lll@{}}
+\toprule
+src vertex & dst vertex & weight \\ \midrule 
+6  & 7  & -1 \\
+11 & 12 & -1 \\
+16 & 17 & -1 \\
+16 & 18 & -1 \\
+15 & 16 & -1 \\
+14 & 15 & -1 \\
+14 & 19 & -1 \\
+14 & 20 & -1 \\
+13 & 14 & -1 \\
+11 & 13 & -1 \\
+10 & 11 & -1 \\
+9  & 10 & -1 \\
+9  & 21 & -1 \\
+9  & 22 & -1 \\
+8  & 9  & -1 \\
+6  & 8  & -1 \\
+5  & 6  & -1 \\
+23 & 24 & -1 \\
+23 & 25 & -1 \\
+23 & 13 & -1 \\
+5  & 23 & -1 \\
+4  & 5  & -1 \\
+4  & 26 & -1 \\
+3  & 4  & -1 \\
+2  & 3  & -1 \\
+1  & 2  & -1 \\ \bottomrule
+\end{tabular}
+}
+\caption{ARCS.CSV}
+\label{tab:eg_arcs}
+\end{subtable}
+    \label{tab:mulval_out}
+\end{table}
+
+Along with the visualization in Figure \ref{fig:tg_001}, MulVal also produces comma separated value formatted output which lends itself more readily to further analysis. The lists of edges and vertices in Table \ref{tab:mulval_out} describe the attack graph generated from Listing \ref{lst:input}.

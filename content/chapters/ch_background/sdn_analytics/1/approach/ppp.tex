@@ -1,0 +1,79 @@
+
+% % % PPS
+% % \begin{table}[ht]
+% % \caption{Current Ports, Protocols, and Services}
+% % \resizebox{.6\textwidth}{!}{%
+% % \begin{tabular}{lllll}
+% % \toprule
+% % Protocol & Port & Service & Boundary &  \\ \midrule
+% % IGP & - & OSPF & P &  \\
+% % TCP & 179 & BGP & PE$\leftrightarrow{}$PE,$\quad$ PE$\leftrightarrow{}$CE &  \\
+% % TCP/UDP & 363,1698,1699 & RSVP & P &  \\
+% % PIM & - & - & P &  \\
+% % Telnet & - & Telnet &  &  \\
+% % TCP & 22 & SSH &  &  \\
+% % UDP & 161,162 & SNMP &  &  \\
+% % UDP & 123 & NTP &  &  \\ \hline
+% % \end{tabular}%
+% % }
+% % \label{tab:pps}
+% % \end{table}
+
+
+
+% The Ports, Protocols, and Services (PPS) listing in Table \ref{tab:pps} gives some details on current and target state network services. How services are accessed across boundaries, what vulnerabilities are present, and how data flow shifts when moving from decentralized to centralized control are key elements in the analysis. %While this list may not be exhaustive, it serves as a starting point to identify areas of the network that are visible to attackers. 
+
+% % PPS
+% \begin{table}[ht]
+% \caption{Ports, Protocols, and Services}
+% \resizebox{.6\textwidth}{!}{%
+% \begin{tabular}{lllll}
+% \toprule
+% Protocol & Port & Service & Boundary &  \\ 
+% \midrule
+% IGP & - & OSPF & P &  \\
+% TCP & 179 & BGP & PE$\leftrightarrow{}$PE,$\quad$ PE$\leftrightarrow{}$CE &  \\
+% TCP/UDP & 363,1698,1699 & RSVP & P &  \\
+% PIM & - & - & P &  \\
+% Telnet & - & Telnet &  &  \\
+% TCP & 22 & SSH &  &  \\
+% UDP & 161,162 & SNMP &  &  \\
+% UDP & 123 & NTP &  &  \\ 
+% \hline
+% IGP & - & OSPF & P $\leftrightarrow{}$SDN local &  \\
+% TCP/UDP & 646 & LDP & P $\leftrightarrow{}$ SDN local &  \\
+% TCP & 179 & BGP & PE$\leftrightarrow{}$CE and P/PE$\leftrightarrow{}$SDN local \\
+% TCP/UDP & 363,1698,1699 & RSVP & P $\leftrightarrow{}$ SDN local &  \\
+% PIM & - & - & P$\leftrightarrow{}$ SDN local &  \\
+% Telnet & - & Telnet &  &  \\
+% TCP & 22 & SSH &  &  \\
+% UDP & 161,162 & SNMP &  &  \\
+% SAA/TWAMP & - & - &  &  \\
+% UDP & 123 & NTP &  &  \\
+% TCP & 6633 & OpenFlow & SDN Global $\leftrightarrow{}$ SDN local &  \\
+% \end{tabular}%
+% }
+% \label{tab:pps}
+% \end{table}
+
+% % \begin{table}[ht]
+% % \caption{Transition and Final PPS}
+% % \label{tab:pps_final}
+% % \resizebox{.6\textwidth}{!}{%
+% % \begin{tabular}{@{}lllll@{}}
+% % \toprule
+% % Protocol & Port & Service & Boundary &  \\ \midrule
+% % IGP & - & OSPF & P $\leftrightarrow{}$SDN local &  \\
+% % TCP/UDP & 646 & LDP & P $\leftrightarrow{}$ SDN local &  \\
+% % TCP & 179 & BGP & PE$\leftrightarrow{}$CE and P/PE$\leftrightarrow{}$SDN local \\
+% % TCP/UDP & 363,1698,1699 & RSVP & P $\leftrightarrow{}$ SDN local &  \\
+% % PIM & - & - & P$\leftrightarrow{}$ SDN local &  \\
+% % Telnet & - & Telnet &  &  \\
+% % TCP & 22 & SSH &  &  \\
+% % UDP & 161,162 & SNMP &  &  \\
+% % SAA/TWAMP & - & - &  &  \\
+% % UDP & 123 & NTP &  &  \\
+% % TCP & 6633 & OpenFlow & SDN Global $\leftrightarrow{}$ SDN local &  \\ \bottomrule
+% % \end{tabular}%
+% % }
+% % \end{table}

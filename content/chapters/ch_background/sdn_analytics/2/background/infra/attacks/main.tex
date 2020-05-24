@@ -1,0 +1,32 @@
+
+
+
+Attacks against provider core networks can be motivated by many factors, but the effects generally fall into one of a handful of categories\cite{Chakrabarti_Govindarasu_2002}. Our threat model assumes an attacker originating outside the core network boundary intends to target a device within the core network, permitting the attacker to view or alter a victim's traffic. In other words, identifying the potential for \textit{eavesdropping} and \textit{tampering} is the focus of this research, and we address the limitations of modeling network \textit{disruption} later in this section. Table \ref{tab:threats} lists some common attack patterns against Layer 2 and 3 networks. In general these attacks are used to redirect a target's traffic through an asset controlled by the attacker, or to escalate the attacker's privileges on systems that interact with the target. We briefly review these attack classes here in order to present our Datalog models in the following sections.
+
+
+
+% Vulns
+\begin{table}[ht]
+\centering
+\captionsetup{justification=centering}
+\caption{Potential Threats}
+\resizebox{.4\textwidth}{!}{%
+% \begin{small}
+\begin{tabular}{@{}lll@{}}
+\toprule
+% Layer 2 & Layer 3  &  \\ \midrule
+VLAN Hopping & ACL Bypass \\
+STP Injection & BGP Hijacking \\
+ARP Cache Poisoning & Route Table Poisoning &  \\
+MAC Flooding & SYN Flooding &  \\
+CAM Overflow & Packet Crafting &  \\
+MAC/DHCP Spoofing & IP Spoofing &  \\
+%MPLS Attachment Point &  IPSec AH/IKE \\ 
+\bottomrule
+\end{tabular}%
+% \end{small}
+}
+\label{tab:threats}
+\end{table}
+
+We frame our threat discussion within Layers 2 and 3 of the OSI 7-layer model here for clarity, but don't limit our analysis to only these vectors. These attacks often aren't the goal of an attacker, but rather enable the attacker to reach their goal through the effects of the compromise. For example, traffic eavesdropping may reveal credentials for a privileged account on some other system the attacker has interest in. 

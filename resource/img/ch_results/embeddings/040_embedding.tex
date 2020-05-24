@@ -1,0 +1,1226 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{040\_embedding}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{Title: Graph Embeddings}\label{title-graph-embeddings}
+
+\subsection{Purpose: Explore ML on graphs, networks,
+etc}\label{purpose-explore-ml-on-graphs-networks-etc}
+
+\subsection{@author: mjz}\label{author-mjz}
+
+    
+
+    \subsection{Background}\label{background}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} python libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k+kn}{import} \PY{n+nn}{logging}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{n}{SEP} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{sep}
+\PY{k+kn}{import} \PY{n+nn}{sys}
+\PY{k+kn}{import} \PY{n+nn}{uuid}
+\PY{k+kn}{import} \PY{n+nn}{pathlib}
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} notebook libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{networkx} \PY{k}{as} \PY{n+nn}{nx}
+\PY{k+kn}{import} \PY{n+nn}{graphviz}
+\PY{k+kn}{import} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} import scipy.stats as st}
+\PY{c+c1}{\PYZsh{} import scipy.special}
+\PY{c+c1}{\PYZsh{} \PYZsh{} bokeh plotting setup}
+\PY{c+c1}{\PYZsh{} import bokeh.io}
+\PY{c+c1}{\PYZsh{} import bokeh.plotting}
+\PY{c+c1}{\PYZsh{} import bokeh.application}
+\PY{c+c1}{\PYZsh{} import bokeh.application.handlers}
+\PY{c+c1}{\PYZsh{} bokeh.io.output\PYZus{}notebook()}
+\PY{c+c1}{\PYZsh{} notebook\PYZus{}url = \PYZsq{}localhost:8888\PYZsq{}}
+
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{k+kn}{from} \PY{n+nn}{google}\PY{n+nn}{.}\PY{n+nn}{cloud} \PY{k+kn}{import} \PY{n}{bigquery}
+\PY{o}{\PYZpc{}}\PY{k}{reload\PYZus{}ext} google.cloud.bigquery
+
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{pandas\PYZus{}gbq}
+
+
+\PY{c+c1}{\PYZsh{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} project libs \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{py\PYZus{}mulval\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/opt/projects/diss/py\PYZhy{}mulval/src}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{py\PYZus{}mulval\PYZus{}path}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Just importing for their flags right now}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{py\PYZus{}mulval} \PY{k}{as} \PY{n+nn}{py\PYZus{}mulval}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{boromir} \PY{k}{as} \PY{n+nn}{boromir}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{log\PYZus{}util} \PY{k}{as} \PY{n+nn}{log\PYZus{}util}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{mulpy} \PY{k}{as} \PY{n+nn}{mulpy}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{as} \PY{n+nn}{secmet}
+\PY{k+kn}{import} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{attack\PYZus{}graph} \PY{k}{as} \PY{n+nn}{attack\PYZus{}graph}
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{mulval\PYZus{}fact\PYZus{}graph} \PY{k+kn}{import} \PY{n}{FactGraph}
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval}\PY{n+nn}{.}\PY{n+nn}{attack\PYZus{}graph} \PY{k+kn}{import} \PY{n}{AttackGraph}
+
+\PY{k+kn}{from} \PY{n+nn}{py\PYZus{}mulval} \PY{k+kn}{import} \PY{n}{flags}
+\PY{n}{FLAGS} \PY{o}{=} \PY{n}{flags}\PY{o}{.}\PY{n}{FLAGS}
+\PY{n}{FLAGS}\PY{p}{(}\PY{p}{[}\PY{n}{sys}\PY{o}{.}\PY{n}{argv}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{c+c1}{\PYZsh{} dont expect cli args from jupyter}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+['/opt/projects/diss/jupyter\_nbs/py36/lib/python3.6/site-
+packages/ipykernel\_launcher.py']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Show an dot graph in this notebook}
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}dot}\PY{p}{(}\PY{n}{ag}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{n}{A} \PY{o}{=} \PY{n}{nx}\PY{o}{.}\PY{n}{nx\PYZus{}agraph}\PY{o}{.}\PY{n}{to\PYZus{}agraph}\PY{p}{(}\PY{n}{ag}\PY{p}{)}
+    \PY{k}{if} \PY{n}{title}\PY{p}{:}
+        \PY{n}{A}\PY{o}{.}\PY{n}{graph\PYZus{}attr}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{n}{label}\PY{o}{=}\PY{n}{title}\PY{p}{,} \PY{n}{labelloc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{top}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{labeljust}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{24}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} A.layout(\PYZsq{}dot\PYZsq{}, args=\PYZsq{}\PYZhy{}Nfontsize=10 \PYZhy{}Nwidth=\PYZdq{}.2\PYZdq{} \PYZhy{}Nheight=\PYZdq{}.2\PYZdq{} \PYZhy{}Nmargin=0 \PYZhy{}Gfontsize=8\PYZsq{})}
+    \PY{n}{args} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{    \PYZhy{}Gsize=17}
+\PY{l+s+s2}{    \PYZhy{}Nfontname=Roboto}
+\PY{l+s+s2}{    \PYZhy{}Efontname=Roboto}
+\PY{l+s+s2}{    \PYZhy{}Nfontsize=14}
+\PY{l+s+s2}{    \PYZhy{}Efontsize=14}
+\PY{l+s+s2}{    }\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{A}\PY{o}{.}\PY{n}{layout}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{args}\PY{o}{=}\PY{n}{args} \PY{p}{)}
+    \PY{c+c1}{\PYZsh{} A.draw(self.outputDir + \PYZsq{}/\PYZsq{} + outfilename)}
+    \PY{n}{A}\PY{o}{.}\PY{n}{draw}\PY{p}{(}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} plt.show()}
+    \PY{k}{return} \PY{n}{graphviz}\PY{o}{.}\PY{n}{Source}\PY{p}{(}\PY{n}{A}\PY{o}{.}\PY{n}{to\PYZus{}string}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} from IPython.display import Image, display}
+\PY{c+c1}{\PYZsh{} def plot\PYZus{}dot(pdot):}
+\PY{c+c1}{\PYZsh{}     plt = Image(pdot.create\PYZus{}png())}
+\PY{c+c1}{\PYZsh{}     display(plt)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Assumptions}\label{assumptions}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{}bash}
+\PY{c+c1}{\PYZsh{} /opt/projects/diss/py\PYZhy{}mulval/src/run\PYZus{}boromir.py \PYZhy{}\PYZhy{}benchmarks=mttf \PYZhy{}\PYZhy{}benchmark\PYZus{}config\PYZus{}file=mttf.yml \PYZhy{}\PYZhy{}boromir\PYZus{}run\PYZus{}count=1000 \PYZhy{}\PYZhy{}bigquery\PYZus{}table=\PYZsq{}cloud\PYZhy{}performance\PYZhy{}tool:test\PYZus{}notebook\PYZus{}bq.test1\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Setup}\label{setup}
+
+We can run boromir with the following command:
+
+\texttt{./run\_boromir.py\ -\/-benchmarks=mttf\ -\/-benchmark\_config\_file=mttf.yml\ -\/-boromir\_run\_count=1000\ -\/-bigquery\_table=\textquotesingle{}cloud-performance-tool:test\_notebook\_bq.test1\textquotesingle{}}
+
+mttf.yml:
+
+\begin{verbatim}
+mttf:
+    flags:
+        # secmet_score_strategy: 'reliability'
+        secmet_plot_intermediate_graphs: False
+        secmet_random_cvss_score: True
+\end{verbatim}
+
+Using the mttf.yml file helps us track runs with version control
+systems, but all flags can be specified at the command line as well.
+\texttt{-\/-secmet\_random\_cvss\_score=True} and
+\texttt{-\/-boromir\_run\_count=1000} create 1000 samples with
+vulnerability scores chosen from a uniform random distribution in
+\texttt{{[}0.0,\ 10.0{]}} to represent a CVSS score. Other distributions
+and intervals can be defined as well.
+
+The flag
+\texttt{-\/-bigquery\_table=\textquotesingle{}cloud-performance-tool:test\_notebook\_bq.test1\textquotesingle{}}
+tells boromir where to publish the results. If no publishing target is
+specified the results are stored as json in the \$TMP directory.
+Influxdb setup is covered in notebook
+\texttt{000\_influxdb\_setup.ipynb}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{}bash}
+\PY{c+c1}{\PYZsh{} /opt/projects/diss/py\PYZhy{}mulval/src/run\PYZus{}boromir.py \PYZhy{}\PYZhy{}benchmarks=mttf \PYZhy{}\PYZhy{}benchmark\PYZus{}config\PYZus{}file=mttf.yml \PYZhy{}\PYZhy{}boromir\PYZus{}run\PYZus{}count=1000 \PYZhy{}\PYZhy{}bigquery\PYZus{}table=\PYZsq{}cloud\PYZhy{}performance\PYZhy{}tool:test\PYZus{}notebook\PYZus{}bq.test1\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bigquery} df
+\PYZsh{} SELECT thedate, sample\PYZus{}uri, test, value, metric,
+SELECT sample\PYZus{}uri, reduced\PYZus{}ag, value, orig\PYZus{}ag, fact\PYZus{}graph,
+metric,
+
+\PYZsh{} \PYZhy{}\PYZhy{} unit, citation, cite\PYZus{}key, metric, metric\PYZus{}name, metric\PYZus{}summary, metric\PYZus{}usage, 
+\PYZsh{} labels,
+\PYZsh{} reduced\PYZus{}ag, orig\PYZus{}ag, fact\PYZus{}graph
+FROM (
+  SELECT
+\PYZsh{}     value,
+    TIMESTAMP\PYZus{}MICROS(CAST(timestamp * 1000000 AS int64)) AS thedate,
+    test, value, unit, labels, metric, run\PYZus{}uri, sample\PYZus{}uri,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|cite\PYZus{}key:(.*?)\PYZbs{}|\PYZsq{}) AS cite\PYZus{}key,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|metric\PYZus{}name:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}name,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}summary:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}summary,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}usage:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}usage,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|attack\PYZus{}graph\PYZus{}reduced:(.*?)\PYZbs{}|\PYZsq{}) AS reduced\PYZus{}ag,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|attack\PYZus{}graph\PYZus{}orig:(.*?)\PYZbs{}|\PYZsq{}) AS orig\PYZus{}ag,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|facts\PYZus{}graph:(.*?)\PYZbs{}|\PYZsq{}) AS fact\PYZus{}graph,
+
+  FROM
+    `cloud\PYZhy{}performance\PYZhy{}tool.test\PYZus{}notebook\PYZus{}bq.test1`
+   WHERE
+     test = \PYZsq{}mttf\PYZsq{}
+     AND metric = \PYZsq{}mttf\PYZsq{} 
+    and run\PYZus{}uri = \PYZsq{}efcc5190\PYZsq{}
+\PYZsh{}      order by timestamp asc
+\PYZsh{}      limit 1
+     ) 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bigquery}
+SELECT * FROM `cloud\PYZhy{}performance\PYZhy{}tool.test\PYZus{}notebook\PYZus{}bq.test1`
+where labels != \PYZsq{}\PYZsq{}
+limit 5
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                             sample\_uri   run\_uri    owner  official  \textbackslash{}
+0  dd089141-8b34-4cc6-94ea-9b6ace05910d  baf7cd41  cat-dog     False
+1  32d10687-767c-4939-a105-3497e6a5bce5  baf7cd41  cat-dog     False
+2  467be8de-d458-4f45-9136-ecf5cb0186e4  baf7cd41  cat-dog     False
+3  7c44d67d-dd8a-48f6-a1ee-f2470f837063  baf7cd41  cat-dog     False
+4  9a61bde6-fd9f-4f67-943d-2be66e578cfa  baf7cd41  cat-dog     False
+
+      timestamp   unit  test product\_name       value  \textbackslash{}
+0  1.588540e+09  weeks  mttf    py\_mulval   50.420199
+1  1.588540e+09  weeks  mttf    py\_mulval  100.001399
+2  1.588540e+09  weeks  mttf    py\_mulval   55.000400
+3  1.588540e+09  weeks  mttf    py\_mulval   11.020000
+4  1.588540e+09  weeks  mttf    py\_mulval   50.240120
+
+                                              labels metric
+0  |attack\_graph\_orig:digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}t{\ldots}   mttf
+1  |attack\_graph\_orig:digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}t{\ldots}   mttf
+2  |attack\_graph\_orig:digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}t{\ldots}   mttf
+3  |attack\_graph\_orig:digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}t{\ldots}   mttf
+4  |attack\_graph\_orig:digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}t{\ldots}   mttf
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Most of the details we'll need for ML are captured in the metadata field
+\texttt{labels}.
+
+We can extract the interesting fields into a pandas dataframe as
+follows:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{}bigquery df}
+
+\PY{c+c1}{\PYZsh{} \PYZsh{}standardSQL}
+\PY{c+c1}{\PYZsh{} SELECT thedate, sample\PYZus{}uri, test, value, unit, metric, run\PYZus{}uri,}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{} citation, cite\PYZus{}key, metric, metric\PYZus{}name, metric\PYZus{}summary, metric\PYZus{}usage, }
+\PY{c+c1}{\PYZsh{} attack\PYZus{}graph, transition\PYZus{}matrix, transition\PYZus{}matrix\PYZus{}raw,}
+\PY{c+c1}{\PYZsh{} labels}
+\PY{c+c1}{\PYZsh{} FROM (}
+\PY{c+c1}{\PYZsh{}   SELECT}
+\PY{c+c1}{\PYZsh{} \PYZsh{}     value,}
+\PY{c+c1}{\PYZsh{}     TIMESTAMP\PYZus{}MICROS(CAST(timestamp * 1000000 AS int64)) AS thedate,}
+\PY{c+c1}{\PYZsh{}     test, value, unit, labels,metric, sample\PYZus{}uri, run\PYZus{}uri,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|citation:(.*?)\PYZbs{}|\PYZsq{}) AS citation,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|cite\PYZus{}key:(.*?)\PYZbs{}|\PYZsq{}) AS cite\PYZus{}key,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|metric\PYZus{}name:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}name,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}summary:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}summary,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}usage:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}usage,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|attack\PYZus{}graph\PYZus{}reduced:(.*?)\PYZbs{}|\PYZsq{}) AS attack\PYZus{}graph,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|transition\PYZus{}matrix:(.*?)\PYZbs{}|\PYZsq{}) AS transition\PYZus{}matrix,}
+\PY{c+c1}{\PYZsh{}     REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|transition\PYZus{}matrix\PYZus{}raw:(.*?)\PYZbs{}|\PYZsq{}) AS transition\PYZus{}matrix\PYZus{}raw,}
+    
+\PY{c+c1}{\PYZsh{}   FROM}
+\PY{c+c1}{\PYZsh{}     `cloud\PYZhy{}performance\PYZhy{}tool.test\PYZus{}notebook\PYZus{}bq.test1`}
+\PY{c+c1}{\PYZsh{}    WHERE}
+\PY{c+c1}{\PYZsh{}      test = \PYZsq{}mttf\PYZsq{}}
+\PY{c+c1}{\PYZsh{}      AND metric = \PYZsq{}mttf\PYZsq{} }
+\PY{c+c1}{\PYZsh{}      and run\PYZus{}uri = \PYZsq{}efcc5190\PYZsq{}}
+\PY{c+c1}{\PYZsh{}      )}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                             sample\_uri  \textbackslash{}
+0  f3c1b87e-cad1-431f-ac63-eac72b694c84
+1  0514df06-4242-451a-b737-41057c26dc00
+2  a6c94818-2807-484a-83c5-d2f227a37a45
+3  8b265a5c-f662-42fd-a8a1-f084ef4a66e1
+4  9dc8f994-84a6-40d4-ae6d-bf1cfdba007d
+
+                                          reduced\_ag  value  \textbackslash{}
+0  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}   4.00
+1  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  12.00
+2  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  16.00
+3  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}   0.75
+4  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  40.50
+
+                                             orig\_ag  \textbackslash{}
+0  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+1  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+2  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+3  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+4  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+
+                                          fact\_graph metric
+0  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+1  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+2  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+3  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+4  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metric}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mttf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+             value
+count  1000.000000
+mean     36.107870
+std      35.488545
+min       0.020600
+25\%       5.258434
+50\%      32.310100
+75\%      55.170250
+max     191.833333
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metric}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mttf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 1000 entries, 0 to 999
+Data columns (total 6 columns):
+sample\_uri    1000 non-null object
+reduced\_ag    1000 non-null object
+value         1000 non-null float64
+orig\_ag       1000 non-null object
+fact\_graph    1000 non-null object
+metric        1000 non-null object
+dtypes: float64(1), object(5)
+memory usage: 54.7+ KB
+    \end{Verbatim}
+
+    We can see how these values fall within our experimental range by fixing
+the lower and upper bounds of security for this topology with the
+following configuration (\texttt{mttf\_step\_cvss.yml}):
+
+\begin{verbatim}
+mttf:
+    flag_matrix: fmatrix
+    flag_matrix_defs:
+        fmatrix:
+            secmet_fix_cvss_score: [1, 2, 3, 4, 5, 6,  7, 8, 9, 10]
+    flags:
+        secmet_plot_intermediate_graphs: False
+        secmet_map_scores: 'cvss2time'
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{}bash}
+\PY{c+c1}{\PYZsh{} /opt/projects/diss/py\PYZhy{}mulval/src/run\PYZus{}boromir.py \PYZhy{}\PYZhy{}benchmarks=mttf \PYZhy{}\PYZhy{}benchmark\PYZus{}config\PYZus{}file=mttf\PYZus{}step\PYZus{}cvss.yml \PYZhy{}\PYZhy{}bigquery\PYZus{}table=\PYZsq{}cloud\PYZhy{}performance\PYZhy{}tool:test\PYZus{}notebook\PYZus{}bq.test1\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bigquery} df\PYZus{}fixed\PYZus{}cvss
+
+\PYZsh{}standardSQL
+SELECT thedate, test, value, unit, metric,
+\PYZhy{}\PYZhy{} citation, cite\PYZus{}key, metric, metric\PYZus{}name, metric\PYZus{}summary, metric\PYZus{}usage, 
+attack\PYZus{}graph, transition\PYZus{}matrix, transition\PYZus{}matrix\PYZus{}raw, fix\PYZus{}cvss\PYZus{}score,
+labels
+FROM (
+  SELECT
+\PYZsh{}     value,
+    TIMESTAMP\PYZus{}MICROS(CAST(timestamp * 1000000 AS int64)) AS thedate,
+    test, value, unit, labels,metric, 
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|citation:(.*?)\PYZbs{}|\PYZsq{}) AS citation,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|cite\PYZus{}key:(.*?)\PYZbs{}|\PYZsq{}) AS cite\PYZus{}key,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}\PYZbs{}|metric\PYZus{}name:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}name,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}summary:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}summary,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|metric\PYZus{}usage:(.*?)\PYZbs{}|\PYZsq{}) AS metric\PYZus{}usage,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|attack\PYZus{}graph\PYZus{}reduced:(.*?)\PYZbs{}|\PYZsq{}) AS attack\PYZus{}graph,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|transition\PYZus{}matrix:(.*?)\PYZbs{}|\PYZsq{}) AS transition\PYZus{}matrix,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|transition\PYZus{}matrix\PYZus{}raw:(.*?)\PYZbs{}|\PYZsq{}) AS transition\PYZus{}matrix\PYZus{}raw,
+    REGEXP\PYZus{}EXTRACT(labels, r\PYZsq{}(?s)\PYZbs{}|secmet\PYZus{}fix\PYZus{}cvss\PYZus{}score:(.*?)\PYZbs{}|\PYZsq{}) AS fix\PYZus{}cvss\PYZus{}score,
+    
+  FROM
+    `cloud\PYZhy{}performance\PYZhy{}tool.test\PYZus{}notebook\PYZus{}bq.test1`
+   WHERE
+     test = \PYZsq{}mttf\PYZsq{}
+     AND metric = \PYZsq{}mttf\PYZsq{} 
+     AND run\PYZus{}uri = \PYZsq{}a1330758\PYZsq{}
+     )
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}fixed\PYZus{}cvss}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fix\PYZus{}cvss\PYZus{}score}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}numeric}\PY{p}{(}\PY{n}{df\PYZus{}fixed\PYZus{}cvss}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fix\PYZus{}cvss\PYZus{}score}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{df\PYZus{}fixed\PYZus{}cvss}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 11 entries, 0 to 10
+Data columns (total 10 columns):
+thedate                  11 non-null datetime64[ns, UTC]
+test                     11 non-null object
+value                    11 non-null float64
+unit                     11 non-null object
+metric                   11 non-null object
+attack\_graph             11 non-null object
+transition\_matrix        11 non-null object
+transition\_matrix\_raw    11 non-null object
+fix\_cvss\_score           11 non-null float64
+labels                   11 non-null object
+dtypes: datetime64[ns, UTC](1), float64(2), object(7)
+memory usage: 1008.0+ bytes
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{n}{fig}\PY{p}{,} \PY{p}{(}\PY{n}{ax1}\PY{p}{,} \PY{n}{ax2}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{11}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+
+\PY{n}{ax1}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MTTF value (1000 random samples)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax1}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{tick\PYZus{}right}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} ax1.set\PYZus{}yticks([\PYZsq{}]) }
+
+\PY{n}{ax2}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{df\PYZus{}fixed\PYZus{}cvss}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax2}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fixed vuln scores in the range 0..10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Fixed vuln scores in the range 0..10')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    So out of 1000 samples, our average time to compromise is
+\textasciitilde{}34 weeks.
+
+    \subsubsection{Functions for extracting data from
+graphs}\label{functions-for-extracting-data-from-graphs}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{dot2adj}\PY{p}{(}\PY{n}{dot\PYZus{}str}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Reads a dot graph file, converts to adj matrix\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{g} \PY{o}{=} \PY{n}{AttackGraph}\PY{p}{(}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{load\PYZus{}dot\PYZus{}string}\PY{p}{(}\PY{n}{dot\PYZus{}str}\PY{p}{)}
+    \PY{n}{nl}  \PY{o}{=} \PY{n}{nodelist}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{nl}\PY{p}{:}
+        \PY{n}{nl} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{g}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(g.nodes(), nl)}
+    \PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{to\PYZus{}numpy\PYZus{}matrix}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{nl}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{weight}\PY{p}{)}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(A.shape, type(A))}
+    \PY{k}{return} \PY{n}{A}
+    
+
+\PY{k}{def} \PY{n+nf}{row2adj}\PY{p}{(}\PY{n}{dot\PYZus{}str\PYZus{}row}\PY{p}{,} \PY{n}{dotcol}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reduced\PYZus{}ag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Reads a dot graph file, converts to adj matrix\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{g} \PY{o}{=} \PY{k+kc}{None}
+    \PY{k}{if} \PY{n}{dotcol} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fact\PYZus{}graph}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+        \PY{n}{g} \PY{o}{=} \PY{n}{FactGraph}\PY{p}{(}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{n}{g} \PY{o}{=} \PY{n}{AttackGraph}\PY{p}{(}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{load\PYZus{}dot\PYZus{}string}\PY{p}{(}\PY{n}{dot\PYZus{}str\PYZus{}row}\PY{p}{[}\PY{n}{dotcol}\PY{p}{]}\PY{p}{)}
+    \PY{n}{nl}  \PY{o}{=} \PY{n}{nodelist}
+    \PY{k}{if} \PY{o+ow}{not} \PY{n}{nl}\PY{p}{:}
+        \PY{n}{nl} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{g}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(g.nodes(), nl)}
+    \PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{to\PYZus{}numpy\PYZus{}matrix}\PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{nl}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{n}{weight}\PY{p}{)}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}     print(A.shape, type(A))}
+    \PY{n}{x} \PY{o}{=}  \PY{n}{A}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} :/ }
+    \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{n}{dot\PYZus{}str\PYZus{}row}\PY{o}{.}\PY{n}{sample\PYZus{}uri}\PY{p}{]} \PY{o}{+} \PY{n}{x} \PY{o}{+}\PY{p}{[}\PY{n}{dot\PYZus{}str\PYZus{}row}\PY{o}{.}\PY{n}{value}\PY{p}{]}
+\PY{c+c1}{\PYZsh{}     print(type(y), y)}
+    \PY{k}{return} \PY{n}{y}
+
+
+\PY{k}{def} \PY{n+nf}{flatNodeList}\PY{p}{(}\PY{n}{nodelist}\PY{p}{)}\PY{p}{:}
+    \PY{n}{fnl} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nodelist}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nodelist}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{fnl}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{fnl}
+    
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                             sample\_uri  \textbackslash{}
+0  f3c1b87e-cad1-431f-ac63-eac72b694c84
+1  0514df06-4242-451a-b737-41057c26dc00
+2  a6c94818-2807-484a-83c5-d2f227a37a45
+3  8b265a5c-f662-42fd-a8a1-f084ef4a66e1
+4  9dc8f994-84a6-40d4-ae6d-bf1cfdba007d
+
+                                          reduced\_ag  value  \textbackslash{}
+0  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}   4.00
+1  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  12.00
+2  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  16.00
+3  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}   0.75
+4  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}  40.50
+
+                                             orig\_ag  \textbackslash{}
+0  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+1  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+2  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+3  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+4  digraph single\_host\_1 \{\textbackslash{}n\textbackslash{}tgraph [name=single\_{\ldots}
+
+                                          fact\_graph metric
+0  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+1  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+2  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+3  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+4  digraph "mulval\_facts.multi\_host\_1.dot" \{\textbackslash{}n\textbackslash{}tg{\ldots}   mttf
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{Load a graph from db}\label{load-a-graph-from-db}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ag\PYZus{}reduced} \PY{o}{=} \PY{n}{AttackGraph}\PY{p}{(}\PY{p}{)}
+\PY{n}{dots} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reduced\PYZus{}ag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{ag\PYZus{}reduced}\PY{o}{.}\PY{n}{load\PYZus{}dot\PYZus{}string}\PY{p}{(}\PY{n}{dots}\PY{p}{)}
+\PY{n}{nodelist} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{nx}\PY{o}{.}\PY{n}{topological\PYZus{}sort}\PY{p}{(}\PY{n}{ag\PYZus{}reduced}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(nodelist)}
+\PY{n}{fnl} \PY{o}{=} \PY{n}{flatNodeList}\PY{p}{(}\PY{n}{nodelist}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{fnl}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(dots)}
+\PY{n}{a} \PY{o}{=} \PY{n}{dot2adj}\PY{p}{(}\PY{n}{dots}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}orig}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} print(type(a), a)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+['w\_0\_0', 'w\_0\_1', 'w\_0\_2', 'w\_0\_3', 'w\_0\_4', 'w\_0\_5', 'w\_1\_0', 'w\_1\_1',
+'w\_1\_2', 'w\_1\_3', 'w\_1\_4', 'w\_1\_5', 'w\_2\_0', 'w\_2\_1', 'w\_2\_2', 'w\_2\_3', 'w\_2\_4',
+'w\_2\_5', 'w\_3\_0', 'w\_3\_1', 'w\_3\_2', 'w\_3\_3', 'w\_3\_4', 'w\_3\_5', 'w\_4\_0', 'w\_4\_1',
+'w\_4\_2', 'w\_4\_3', 'w\_4\_4', 'w\_4\_5', 'w\_5\_0', 'w\_5\_1', 'w\_5\_2', 'w\_5\_3', 'w\_5\_4',
+'w\_5\_5']
+    \end{Verbatim}
+
+    \subsubsection{Create training set}\label{create-training-set}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cols}\PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sample\PYZus{}uri}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{n}{fnl} \PY{o}{+} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{score}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{df\PYZus{}fnl} \PY{o}{=}  \PY{n}{df}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{row}\PY{p}{:} \PY{n}{row2adj}\PY{p}{(}\PY{n}{row}\PY{p}{,} \PY{n}{dotcol}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reduced\PYZus{}ag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score\PYZus{}orig}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{nodelist}\PY{o}{=}\PY{n}{nodelist}\PY{p}{)} \PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{columns}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,} \PY{n}{result\PYZus{}type}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{expand}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}fnl}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{cols}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}fnl}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}fnl}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(1000, 38)
+                             sample\_uri  w\_0\_0  w\_0\_1  w\_0\_2  w\_0\_3  w\_0\_4  \textbackslash{}
+0  f3c1b87e-cad1-431f-ac63-eac72b694c84    0.0   5.49    0.0    0.0    0.0
+1  0514df06-4242-451a-b737-41057c26dc00    0.0   7.74    0.0    0.0    0.0
+2  a6c94818-2807-484a-83c5-d2f227a37a45    0.0   6.21    0.0    0.0    0.0
+3  8b265a5c-f662-42fd-a8a1-f084ef4a66e1    0.0   2.05    0.0    0.0    0.0
+4  9dc8f994-84a6-40d4-ae6d-bf1cfdba007d    0.0   7.00    0.0    0.0    0.0
+
+   w\_0\_5  w\_1\_0  w\_1\_1  w\_1\_2  {\ldots}  w\_4\_3  w\_4\_4  w\_4\_5  w\_5\_0  w\_5\_1  w\_5\_2  \textbackslash{}
+0    0.0    0.0    0.0   5.81  {\ldots}    0.0    0.0   5.07    0.0    0.0    0.0
+1    0.0    0.0    0.0   5.21  {\ldots}    0.0    0.0   6.43    0.0    0.0    0.0
+2    0.0    0.0    0.0   1.85  {\ldots}    0.0    0.0   8.10    0.0    0.0    0.0
+3    0.0    0.0    0.0   5.71  {\ldots}    0.0    0.0   4.82    0.0    0.0    0.0
+4    0.0    0.0    0.0   9.67  {\ldots}    0.0    0.0   7.84    0.0    0.0    0.0
+
+   w\_5\_3  w\_5\_4  w\_5\_5  score
+0    0.0    0.0    0.0   4.00
+1    0.0    0.0    0.0  12.00
+2    0.0    0.0    0.0  16.00
+3    0.0    0.0    0.0   0.75
+4    0.0    0.0    0.0  40.50
+
+[5 rows x 38 columns]
+    \end{Verbatim}
+
+    \subsection{ML Experiments}\label{ml-experiments}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{from} \PY{n+nn}{pandas} \PY{k+kn}{import} \PY{n}{DataFrame}\PY{p}{,}\PY{n}{Series}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline 
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LinearRegression}\PY{p}{,} \PY{n}{Lasso}\PY{p}{,} \PY{n}{Ridge}\PY{p}{,} \PY{n}{ElasticNet}\PY{p}{,} \PY{n}{SGDRegressor}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}boston}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{api} \PY{k}{as} \PY{n+nn}{sm}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+\PY{k+kn}{import} \PY{n+nn}{warnings}
+\PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}from sklearn.model\PYZus{}selection import train\PYZus{}test\PYZus{}split}
+
+
+
+\PY{k}{def} \PY{n+nf}{pretty\PYZus{}print\PYZus{}linear}\PY{p}{(}\PY{n}{coefs}\PY{p}{,} \PY{n}{names} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} \PY{n}{sort} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{names} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n}{names} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{X}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{coefs}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+    \PY{n}{lst} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{coefs}\PY{p}{,} \PY{n}{names}\PY{p}{)}
+    \PY{k}{if} \PY{n}{sort}\PY{p}{:}
+        \PY{n}{lst} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{lst}\PY{p}{,} \PY{n}{key} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ + }\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{ * }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{coef}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{name}\PY{p}{)} \PY{k}{for} \PY{n}{coef}\PY{p}{,} \PY{n}{name} \PY{o+ow}{in} \PY{n}{lst}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{load\PYZus{}data}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{X} \PY{o}{=} \PY{n}{df\PYZus{}fnl}\PY{p}{[}\PY{n}{fnl}\PY{p}{]}
+    \PY{n}{Y} \PY{o}{=} \PY{n}{df\PYZus{}fnl}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{names} \PY{o}{=} \PY{n}{fnl}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Y:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{Y}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{names:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{names}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,}\PY{n}{names}
+
+\PY{k}{def} \PY{n+nf}{scale\PYZus{}data}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{:}
+    \PY{n}{scaler} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}
+    \PY{n}{X} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+    \PY{k}{return} \PY{n}{X}
+
+
+\PY{k}{def} \PY{n+nf}{split\PYZus{}data}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{)}\PY{p}{:}
+    \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.33}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+    \PY{k}{return} \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}test}
+
+
+\PY{k}{def} \PY{n+nf}{root\PYZus{}mean\PYZus{}square\PYZus{}error}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{:}
+    \PY{n}{rmse\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{o}{\PYZhy{}}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{,}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{o}{\PYZhy{}}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{rmse\PYZus{}train}
+
+\PY{k}{def} \PY{n+nf}{plot\PYZus{}real\PYZus{}vs\PYZus{}predicted}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{real}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+    \PY{k}{return} \PY{n}{plt}
+
+\PY{k}{def} \PY{n+nf}{generate\PYZus{}regression\PYZus{}values}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+    \PY{n}{params} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{intercept\PYZus{}}\PY{p}{,} \PY{n}{model}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{)}
+    \PY{n}{predictions} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+    \PY{n}{newX} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Constant}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}
+    \PY{n}{MSE} \PY{o}{=} \PY{p}{(}\PY{n+nb}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{y} \PY{o}{\PYZhy{}} \PY{n}{predictions}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{newX}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{newX}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Note if you don\PYZsq{}t want to use a DataFrame replace the two lines above with}
+    \PY{c+c1}{\PYZsh{} newX = np.append(np.ones((len(X),1)), X, axis=1)}
+    \PY{c+c1}{\PYZsh{} MSE = (sum((y\PYZhy{}predictions)**2))/(len(newX)\PYZhy{}len(newX[0]))}
+
+    \PY{n}{var\PYZus{}b} \PY{o}{=} \PY{n}{MSE} \PY{o}{*} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{newX}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{newX}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{diagonal}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{sd\PYZus{}b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{var\PYZus{}b}\PY{p}{)}
+    \PY{n}{ts\PYZus{}b} \PY{o}{=} \PY{n}{params} \PY{o}{/} \PY{n}{sd\PYZus{}b}
+
+    \PY{n}{p\PYZus{}values} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{stats}\PY{o}{.}\PY{n}{t}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{newX}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{ts\PYZus{}b}\PY{p}{]}
+
+    \PY{n}{sd\PYZus{}b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{sd\PYZus{}b}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+    \PY{n}{ts\PYZus{}b} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{ts\PYZus{}b}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+    \PY{n}{p\PYZus{}values} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{p\PYZus{}values}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+    \PY{n}{params} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{params}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}
+
+    \PY{n}{myDF3} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+    \PY{n}{myDF3}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Coefficients}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{myDF3}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Standard Errors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{myDF3}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{t values}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{myDF3}\PY{p}{[}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Probabilites}\PY{l+s+s2}{\PYZdq{}}
+    \PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{n}{params}\PY{p}{,} \PY{n}{sd\PYZus{}b}\PY{p}{,} \PY{n}{ts\PYZus{}b}\PY{p}{,} \PY{n}{p\PYZus{}values}\PY{p}{]}
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{myDF3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Embeddings}\label{embeddings}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{names} \PY{o}{=} \PY{n}{load\PYZus{}data}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+X: (1000, 36)
+Y: (1000,)
+names: 36
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        w\_0\_0        w\_0\_1   w\_0\_2   w\_0\_3   w\_0\_4   w\_0\_5   w\_1\_0   w\_1\_1  \textbackslash{}
+count  1000.0  1000.000000  1000.0  1000.0  1000.0  1000.0  1000.0  1000.0
+mean      0.0     4.940850     0.0     0.0     0.0     0.0     0.0     0.0
+std       0.0     2.875171     0.0     0.0     0.0     0.0     0.0     0.0
+min       0.0     0.010000     0.0     0.0     0.0     0.0     0.0     0.0
+25\%       0.0     2.527500     0.0     0.0     0.0     0.0     0.0     0.0
+50\%       0.0     4.835000     0.0     0.0     0.0     0.0     0.0     0.0
+75\%       0.0     7.427500     0.0     0.0     0.0     0.0     0.0     0.0
+max       0.0     9.990000     0.0     0.0     0.0     0.0     0.0     0.0
+
+             w\_1\_2       w\_1\_3  {\ldots}   w\_4\_2   w\_4\_3   w\_4\_4        w\_4\_5  \textbackslash{}
+count  1000.000000  1000.00000  {\ldots}  1000.0  1000.0  1000.0  1000.000000
+mean      5.121110     5.09931  {\ldots}     0.0     0.0     0.0     5.032080
+std       2.856995     2.85285  {\ldots}     0.0     0.0     0.0     2.894216
+min       0.010000     0.02000  {\ldots}     0.0     0.0     0.0     0.000000
+25\%       2.607500     2.58000  {\ldots}     0.0     0.0     0.0     2.580000
+50\%       5.115000     5.24000  {\ldots}     0.0     0.0     0.0     5.015000
+75\%       7.592500     7.50250  {\ldots}     0.0     0.0     0.0     7.630000
+max       9.980000    10.00000  {\ldots}     0.0     0.0     0.0     9.990000
+
+        w\_5\_0   w\_5\_1   w\_5\_2   w\_5\_3   w\_5\_4   w\_5\_5
+count  1000.0  1000.0  1000.0  1000.0  1000.0  1000.0
+mean      0.0     0.0     0.0     0.0     0.0     0.0
+std       0.0     0.0     0.0     0.0     0.0     0.0
+min       0.0     0.0     0.0     0.0     0.0     0.0
+25\%       0.0     0.0     0.0     0.0     0.0     0.0
+50\%       0.0     0.0     0.0     0.0     0.0     0.0
+75\%       0.0     0.0     0.0     0.0     0.0     0.0
+max       0.0     0.0     0.0     0.0     0.0     0.0
+
+[8 rows x 36 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

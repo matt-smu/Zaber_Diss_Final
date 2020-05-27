@@ -91,7 +91,7 @@ Attack and defense describes many of the security metrics we have investigated i
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/cybok_systems.png}
 \end{mdframed}
 \caption{Cybok: Systems Domain Metrics
-\label{fig:background:cybok_ad_metrics}}
+\label{fig:background:cybok_sys_metrics}}
 \end{figure} 
 
 Systems security metrics span most aspects of operational security. Hardware and Network security metrics were discussed under infrastructure. Typical applications of cryptographic security metrics include all the formal verification artifacts involved in the validation of a protocol or implementation, along with performance, key size, entropy, etc. OS security metrics may be derived from common criteria/ EAL or measure isolation, weakness to side channels, or number of vulnerabilities known along with severity. 
@@ -103,7 +103,7 @@ Systems security metrics span most aspects of operational security. Hardware and
 \label{fig:background:pendleton_vuln_metrics}}
 \end{figure} 
 
-Model based network security metrics classified by Ramos\cite{Ramos_Lazar_Filho_Rodrigues_2017} are shown below. These metrics are designated as Compliance based when a larger value indicates more security. Moment identifies if a measurement can be taken pre-deployment and remains static throughout operation, or if the metric is dynamic and should be measured repeatedly. Consistency distinguishes if the measured value relies on subjective human input or if its evaluation is objective. To compare with network performance metrics like latency or throughput, these security metrics are heavily influenced by subjective criteria. For example, the reliability based models make assumptions about an attacker’s success rate, level of effort, motivations, and capabilities that could change depending on who is filling in the weights. 
+Model based network security metrics classified by Ramos\cite{Ramos_Lazar_Filho_Rodrigues_2017} are shown in Figure \ref{fig:background:ramos_taxonomy}. These metrics are designated as Compliance based when a larger value indicates more security. Moment identifies if a measurement can be taken pre-deployment and remains static throughout operation, or if the metric is dynamic and should be measured repeatedly. Consistency distinguishes if the measured value relies on subjective human input or if its evaluation is objective. To compare with network performance metrics like latency or throughput, these security metrics are heavily influenced by subjective criteria. For example, the reliability based models make assumptions about an attacker’s success rate, level of effort, motivations, and capabilities that could change depending on who is filling in the weights. 
 
 % \begin{minipage}{\linewidth}
 % % \begin{table}[]
@@ -175,8 +175,11 @@ Model based network security metrics classified by Ramos\cite{Ramos_Lazar_Filho_
 \end{figure} 
 
 
+Infrastructure Metrics to evaluate hardware security can be found in Rostami’s survey\cite{Rostami_2013, Rostami_Koushanfar_Karri_2014}. The majority of these are incident counts or ratios of expected to actual values, although analytical calculations (Hamming distances) are suggested to measure the amount of divergence from a known good source in several proposed metrics. Assuming the gold standard is available against which these measurements can be taken, they will evaluate the measurement empirically and deterministically. These metrics are similar to their performance related counterparts (eg, SPEC CPU) in that the performance increase over or under a reference system can be represented as a ratio of the two values. 
 
 Cyber-Physical Systems (CPS) includes SCADA and other control systems, vehicle networks, and IoT systems that fall outside the scope of this thesis but certainly have applicable security metrics associated with attack surface and information leakage. Similarly, most aspects of the other infrastructure components listed above are captured in the system and threat model and included in the Attack \& Defense security metrics. Types of security metrics applicable here but not listed in the surveys above might include supply chain vulnerabilities, weakness to eavesdropping or side channel attacks. 
+
+
 
 \subsubsection{Software \& Platform Security Metrics}
 
@@ -198,12 +201,12 @@ Software security metrics were the focus of Morrison’s survey and apply here b
 \includegraphics[width=.85\linewidth]{resource/img/ch_background/cybok_metrics/morrison_implementation.png}
 \centering
 \caption{Morrison’s Implementation Security metrics fall under SW\&P.
-\label{fig:background:cybok_ad_vaugh_ttoa}}
+\label{fig:background:morrison_implementation_ad}}
 \end{figure} 
 
 % \subsubsection{Systems Security Metrics}
 
-\subsubsection{Summary}
+\subsection{Summary}
 
 In the surveys summarized above there were over 500 distinct security metrics identified. The surveys each provided their own classification systems which were appropriate for the analysis they conducted, but none of these taxonomies generalize well to classify all types of security metrics. In this section we have described properties common to all metrics, identified overlaps in the various taxonomies, identified points of confusion between existing metric hierarchies, and described a suitable and intuitive system for classifying any current or future security metric. By using the Cybok as the underlying classification system we are also able to determine the distribution of metrics in each topic and identify areas of limited coverage which would benefit from future research.
 

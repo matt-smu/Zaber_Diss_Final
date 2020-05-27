@@ -3,7 +3,7 @@
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/vaughn_taxonomy.png}
-\caption{Information assurance measures and metrics - Vaughn\cite{Vaughn_Henning_Siraj_2003}}
+\caption{Vaughn's Security Metric Taxonomy\cite{Vaughn_Henning_Siraj_2003}}
 \label{fig:background:vaughn_taxonomy}
 \end{figure} 
 
@@ -22,7 +22,7 @@ Vaughn’s taxonomy\cite{Vaughn_Henning_Siraj_2003} from 2003 is heavily influen
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/verendel_model_taxonomy.png}
-\caption{Quantified security is a weak hypothesis - Verendel \cite{Verendel_2009}}
+\caption{Verendel's Security Metric Taxonomy \cite{Verendel_2009}}
 \label{fig:background:verendel_taxonomy}
 \end{figure} 
 
@@ -41,7 +41,7 @@ Verendel shows that some classes of metrics, specifically cryptographic strength
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/pendleton_metric_taxonomy_drawio.png}
-\caption{A Survey on Security Metrics - Pendleton\cite{Pendleton_Garcia-Lebron_Cho_Xu_2016}}
+\caption{Pendleton's Security Metric Taxonomy\cite{Pendleton_Garcia-Lebron_Cho_Xu_2016}}
 \label{fig:background:pendleton_taxonomy}
 \end{figure} 
 
@@ -109,7 +109,7 @@ In the conclusions Pendleton hints at some properties desirable in all security 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/ramos_taxonomy.png}
-\caption{Model-Based Quantitative Network Security Metrics: A Survey\cite{Ramos_Lazar_Filho_Rodrigues_2017}}
+\caption{Ramos' Security Metric Taxonomy\cite{Ramos_Lazar_Filho_Rodrigues_2017}}
 \label{fig:background:ramos_taxonomy}
 \end{figure} 
 
@@ -124,7 +124,7 @@ Ramos\cite{Ramos_Lazar_Filho_Rodrigues_2017} focuses on model-based network secu
 
 The primary classification in \cite{Ramos_Lazar_Filho_Rodrigues_2017} is by target. A metric can evaluate a Process (eg SSE-CMM), Software, the Network, or the Organization - which includes physical and personnel security metrics. The Construction Type category distinguishes between empirical and analytical metrics, the latter requiring some type of model (attack graph, markov, etc)  to perform evaluation. Measurement Consistency describes whether a metric is objective or subjective. 
 
-Ramos splits the set of MB QNSMs into 3 buckets based on the input model the metric expects (Stochastic, Graph, Other) with other including attack nets, petri nets, etc. This partitioning is likely to make reporting results easier as, in our experience, these input models will be produced from the same set of input data. Should we consider a metric that computes a function analytically and another that estimates the same quantity through simulation separate metrics? In table IX\cite{Ramos_Lazar_Filho_Rodrigues_2017} Ramos indicates the lack of validation across the surveyed metrics even when the author’s own inline validation we accounted for. Select metrics aligned with Ramos' survey are shown in Table \ref{tab:ramos_metrics}.
+Ramos splits the set of model based quantitative security metrics into 3 buckets based on the input model the metric expects (Stochastic, Graph, Other) with other including attack nets, petri nets, etc. This partitioning is likely to make reporting results easier as, in our experience, these input models will be produced from the same set of input data. Should we consider a metric that computes a function analytically and another that estimates the same quantity through simulation separate metrics? In table IX\cite{Ramos_Lazar_Filho_Rodrigues_2017} Ramos indicates the lack of validation across the surveyed metrics even when the author’s own inline validation we accounted for. Select metrics aligned with Ramos' survey are shown in Table \ref{tab:ramos_metrics}.
 
 
 \begin{tiny}
@@ -182,7 +182,7 @@ Policy Security Score \cite{Abedin_Nessa_Al-Shaer_Khan_2006} & compliance & dyna
 Probabilistic Vulnerability Measure \cite{Ahmed_Al-Shaer_Khan_2008} & non-compliance & dynamic & subjective &  \\
 Attack Propagation \cite{Ahmed_Al-Shaer_Taibah_Khan_2011} & non-compliance & dynamic & subjective &  \\
 ADVISE \cite{LeMay_Ford_Keefe_Sanders_Muehrcke_2011} & compliance & static & subjective &  \\* \bottomrule
-\caption{Ramos' Survey: Selected Model Based Security Metrics\cite{Ramos_Lazar_Filho_Rodrigues_2017} (select)}
+\caption{Ramos' Survey: Selected Model Based Security Metrics\cite{Ramos_Lazar_Filho_Rodrigues_2017}}
 \label{tab:ramos_metrics}\\
 \end{longtable}
 \end{tiny}
@@ -191,7 +191,7 @@ ADVISE \cite{LeMay_Ford_Keefe_Sanders_Muehrcke_2011} & compliance & static & sub
 \begin{figure}[ht]
 \centering
 \includegraphics[width=.95\linewidth]{resource/img/ch_background/cybok_metrics/morrison_taxonomy.png}
-\caption{Mapping the field of software life cycle security metrics\cite{Morrison_Moye_Pandita_Williams_2018}
+\caption{Morrison's Security Metric Taxonomy\cite{Morrison_Moye_Pandita_Williams_2018}
 \label{fig:background:morrison_taxonomy}}
 \end{figure} 
 
@@ -274,12 +274,12 @@ Report Confidence (RC) & CVSS  & \cite{Scarfone_Mell_2008} & Quantitative & coun
 \end{tiny}
 
 
-% \begin{figure}[ht]
-% \centering
-% \includegraphics[width=.55\linewidth]{resource/img/ch_background/cybok_metrics/morrison_metric_props_table.png}
-% \caption{\# Security Metrics by Category/SubCategory (out of 324)\cite{Morrison_Moye_Pandita_Williams_2018}
-% \label{fig:background:morrison_metric_props}}
-% \end{figure} 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.55\linewidth]{resource/img/ch_background/cybok_metrics/morrison_metric_props_table.png}
+\caption{\# Security Metrics by Category/SubCategory (out of 324)\cite{Morrison_Moye_Pandita_Williams_2018}
+\label{fig:background:morrison_metric_props}}
+\end{figure} 
 
 As these metrics are focused on software security, Morrison finds that many are either normalized to existing software metrics or are extensions thereof. Subcategories of Security Properties seem to be based on surveys about the listed property but this may reflect the source authors rather than an inability to automate collection. Incident Metrics more closely map to previous other’s Vulnerabilities categories as nothing indicates successful attacks are being examined here. 
 From the paper’s findings, 85\% of metrics surveyed have only been proposed and evaluated by the author, pointing again to the need for metric validation. Very few metrics apply to design time or test time evaluation in the SDLC - most are tuned for production deployment. The majority of metrics are subjective, relying on user feedback. Select metrics aligned with Morrison's survey are shown in Table \ref{tab:morrison_metrics}.

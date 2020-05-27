@@ -43,7 +43,7 @@ We frame our threat discussion within Layers 2 and 3 of the OSI 7-layer model he
 
 \begin{figure}[ht]
   \centering
-% \noindent\begin{minipage}[t]{0.98\linewidth}
+% \noindent\begin{minipage}[t]{0.9\linewidth}
 \begin{bytefield}[bitwidth=1em]{39}
 % \begin{bytefield}{39}
 \bitbox[]{35}{$\overbrace{\hspace{34em}}^{\text{\normalsize L1 Eth Packet (72--1530B)}}$} & \bitbox[]{4}{} \\
@@ -58,7 +58,7 @@ We frame our threat discussion within Layers 2 and 3 of the OSI 7-layer model he
         \bitbox{10}{Payload}  & \bitbox{4}{CRC}
          & \bitbox{4}{IPG} 
     \end{rightwordgroup} \\
-    \begin{rightwordgroup}{Bytes in field}
+    \begin{rightwordgroup}{Bytes}
     \bitbox[]{3}{7} &  \bitbox[]{3}{1}  & 
         \bitbox[]{4}{6}  & \bitbox[]{4}{6} & 
         \bitbox[]{4}{4}  & \bitbox[]{3}{2} &
